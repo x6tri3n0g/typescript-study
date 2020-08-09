@@ -172,3 +172,86 @@ $ npm run build # 또는 yarn build
 할 수 있습니다.
 
 <br />
+<br />
+<br />
+
+## 기본 타입
+
+`let`과 `const`를 사용하여 특정 값을 선언할 때 여러가지 기본 타입을 지정하는 것을 연습합니다.
+
+```
+let count = 0; // 숫자
+count += 1;
+count = '갑자기 분위기 문자열'; // 이러면 에러가 납니다!
+
+const message: string = 'hello world'; // 문자열
+
+const done: boolean = true; // 불리언 값
+
+const numbers: number[] = [1, 2, 3]; // 숫자 배열
+const messages: string[] = ['hello', 'world']; // 문자열 배열
+
+messages.push(1); // 숫자 넣으려고 하면.. 안된다!
+
+let mightBeUndefined: string | undefined = undefined; // string 일수도 있고 undefined 일수도 있음
+let nullableNumber: number | null = null; // number 일수도 있고 null 일수도 있음
+
+let color: 'red' | 'orange' | 'yellow' = 'red'; // red, orange, yellow 중 하나임
+color = 'yellow';
+color = 'green'; // 에러 발생!
+```
+
+<br />
+
+TypeScript를 사용하면 이 처럼 변수 또는 상수에 타입을 지정할 수 있어 우리가 사전에 지정하지 않은 값이 들어오게되면 에러를 발생시킵니다.
+이렇게 에러가 발생한 경우 컴파일이 실행되지 않으며 `tsc` 명령어를 실행시키더라도 컴파일이 실패되었다는 메시지를 발생시킬 것입니다.
+
+<br />
+<br />
+
+## 함수에서 타입 정하기
+
+함수에서 타입을 정하는 방법을 알아봅시다.
+다음과 같은 코드를 작성합니다.
+
+> ./src/practice2.ts
+
+```
+function sum(x: number, y: number): number {
+  return x + y;
+}
+
+sum(1, 2);
+```
+
+이와 같은 코드를 작성하게 되면 `sum()`함수를 호출할 때 메개변수의 타입을 보여줍니다.
+
+<br />
+
+이번에는 숫자의 배열을 모두 더하는 함수를 생성해보겠습니다.
+
+<br />
+
+```
+function sumArray(numbers: number[]): number {
+  return numbers.reduce((acc, current) => acc + current, 0);
+}
+
+const total = sumArray([1, 2, 3, 4, 5]);
+```
+
+<br />
+
+타입스크립트를 사용했을 때 편리한 점은 배열의 내장함수를 사용할 때에는 타입 유추가 매우 잘 이루어진다는 것입니다.
+
+<br />
+
+참고로 아무것도 반환하지 않는 함수를 만들 때는 아래와 같은 함수를 생성합니다.
+
+```
+function returnNothing(): void {
+  console.log('I am just saying hello world');
+}
+```
+
+함수 return 타입을 지정해주는 부분에 void를 입력해줍니다.
