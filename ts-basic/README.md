@@ -175,7 +175,7 @@ $ npm run build # 또는 yarn build
 <br />
 <br />
 
-## 기본 타입
+## 기본 타입
 
 `let`과 `const`를 사용하여 특정 값을 선언할 때 여러가지 기본 타입을 지정하는 것을 연습합니다.
 
@@ -254,4 +254,10 @@ function returnNothing(): void {
 }
 ```
 
-함수 return 타입을 지정해주는 부분에 void를 입력해줍니다.
+함수 return 타입을 지정해주는 부분에 `void`를 입력해줍니다.
+
+<br />
+<br />
+<br />
+
+## interface 사용해보기
