@@ -92,3 +92,83 @@ tsconfig.json 파일에서는 TypeScript가 컴파일될 때 필요한 옵션을
   }
 }
 ```
+
+<br />
+
+## TypeScript 파일 생성하기
+
+프로젝트 디렉토리 안에 `src` 폴더를 생성하고 `practice.ts` 파일을 생성합니다.
+
+> ./src/practice.ts
+
+```
+const message: string = 'hello world';
+console.log(message);
+```
+
+<br />
+
+TypeScript는 이렇게 `*.ts`와 같은 형식을 사용합니다. message에 선언된 코드를 보시면 `: string`과 같이 작성되어 있는 것을 볼 수 있습니다. 이는 변수에 string 값을 사용한다고 분명히 명시해주는 것입니다. 따라서 string 값 이외의 값을 입력하게 되면 Error을 발생시킵니다.
+
+<br />
+
+#### TypeScript 컴파일 하기
+
+코드를 모두 작성했다면 프로젝트 디렉토리에서 아래 명령어를 실행시켜보세요.
+
+```
+$ tsc # npx tsc
+```
+
+그러면 ./dist에 `practice.js` 파일이 생성됩니다.
+
+```
+"use strict";
+var message = 'hello world';
+console.log(message);
+```
+
+<br />
+
+이 처럼 컴파일 과정에서 명시한 타입은 모두 사라지게 됩니다.
+
+<br />
+
+우리는 방금 글로벌로 설치한 TypeScript CLI를 통해 코드를 컴파일 했습니다. 만약 `typescript`를 프로젝트 내에서 사용하기 위해서는 typescript 패키지를 사용해야합니다.
+typescript 패키지를 설치합니다.
+
+```
+$ yarn add typescript # 또는 npm install --save typescript
+```
+
+<br />
+
+그 다음 package.json에서 다음과 같이 `build` 스크립트를 만들고 추후 build 시 사용합니다.
+
+```
+{
+  "name": "ts-practice",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  },
+  "scripts": {
+    "build": "tsc"
+  }
+}
+```
+
+<br />
+
+이제 빌드 시에는
+
+```
+$ npm run build # 또는 yarn build
+```
+
+할 수 있습니다.
+
+<br />
