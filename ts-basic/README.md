@@ -2,7 +2,7 @@
 
 <br />
 
-> [TypeScript Handbook](https://typescript-kr.github.io/)를 참고합니다.
+> [Velopert님의 타입스크립트 기초 연습](https://velog.io/@velopert/typescript-basics)를 참고합니다.
 
 <br />
 
