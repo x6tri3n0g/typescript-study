@@ -261,3 +261,246 @@ function returnNothing(): void {
 <br />
 
 ## interface 사용해보기
+
+`interface`는 클래스 또는 객체를 위한 타입을 지정할 때 사용하는 문법입니다.
+
+<br />
+
+#### 클래스에서 interface를 implement하기
+
+지금부터 `interface`를 통해 클래스 특정 조건을 만들고, 요구사항을 설정합니다. 그리고 클래스를 선언 할 때 `implement` 키워드를 사용하여 해당 클래스가 `interface`의 요구사항을 구현한다는 것을 명시합니다.
+
+<br />
+
+> practice3.ts
+
+```
+// Shape 라는 interface 를 선언합니다.
+interface Shape {
+  getArea(): number; // Shape interface 에는 getArea 라는 함수가 꼭 있어야 하며 해당 함수의 반환값은 숫자입니다.
+}
+
+class Circle implements Shape {
+  // `implements` 키워드를 사용하여 해당 클래스가 Shape interface 의 조건을 충족하겠다는 것을 명시합니다.
+
+  radius: number; // 멤버 변수 radius 값을 설정합니다.
+
+  constructor(radius: number) {
+    this.radius = radius;
+  }
+
+  // 너비를 가져오는 함수를 구현합니다.
+  getArea() {
+    return this.radius * this.radius * Math.PI;
+  }
+}
+
+class Rectangle implements Shape {
+  width: number;
+  height: number;
+  constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+  }
+  getArea() {
+    return this.width * this.height;
+  }
+}
+
+const shapes: Shape[] = [new Circle(5), new Rectangle(10, 5)];
+
+shapes.forEach(shape => {
+  console.log(shape.getArea());
+});
+```
+
+<br />
+
+결과를 보기 위해서는 프로젝트 폴더에서
+
+```
+$ npx tsc
+```
+
+를 실행하고 /dist 폴더의 practice3.js 파일을 실행합니다.(`node ./dist/practice3.js`)
+
+<br />
+
+기존에 작성했던 Ractangle 클래스 내부 코드를 다시 살펴보겠습니다.
+
+```
+width: number;
+height: number;
+
+constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
+}
+```
+
+<br />
+
+이런식으로 `width`, `height` 멤버 변수를 선언한 다음에 `constructor`에서 해당 값들을 하나하나 설정해주었습니다. TypeScript에서는 constructor의 파라미터 쪽에 `public` 또는 `private` accessor를 사용하면 직접 하나하나 설정해주는 작업을 생략할 수 있습니다.
+
+<br />
+
+> accessor을 적용한 practice3.ts
+
+```
+// Shape 라는 interface 를 선언합니다.
+interface Shape {
+  getArea(): number; // Shape interface 에는 getArea 라는 함수가 꼭 있어야 하며 해당 함수의 반환값은 숫자입니다.
+}
+
+class Circle implements Shape {
+  // `implements` 키워드를 사용하여 해당 클래스가 Shape interface 의 조건을 충족하겠다는 것을 명시합니다.
+  constructor(public radius: number) {
+    this.radius = radius;
+  }
+
+  // 너비를 가져오는 함수를 구현합니다.
+  getArea() {
+    return this.radius * this.radius * Math.PI;
+  }
+}
+
+class Rectangle implements Shape {
+  constructor(private width: number, private height: number) {
+    this.width = width;
+    this.height = height;
+  }
+  getArea() {
+    return this.width * this.height;
+  }
+}
+
+const circle = new Circle(5);
+const rectangle = new Rectangle(10, 5);
+
+console.log(circle.radius); // 에러 없이 작동
+console.log(rectangle.width); // width 가 private 이기 때문에 에러 발생!
+
+const shapes: Shape[] = [new Circle(5), new Rectangle(10, 5)];
+
+shapes.forEach(shape => {
+  console.log(shape.getArea());
+});
+```
+
+<br />
+
+`public` accessor는 특정 값이 클래스의 밖에서도 조회 가능하다는 것을 의미합니다. 예를 들어 Circle.width에 접근이 가능하다는 말인 거죠. 반면 Ractangle.width에 접근한다면 컴파일 단계에서 에러를 발생시킬 것입니다.
+
+<br />
+<br />
+
+## 일반 객체를 interface로 타입 설정하기
+
+이번에는 클래스가 아닌 일반 객체를 interface로 사용하여 타입을 지정하는 방법을 알아보도록 하겠습니다.
+
+<br />
+
+```
+interface Person {
+  name: string;
+  age?: number; // 물음표가 들어갔다는 것은, 설정을 해도 되고 안해도 되는 값이라는 것을 의미합니다.
+}
+interface Developer {
+  name: string;
+  age?: number;
+  skills: string[];
+}
+
+const person: Person = {
+  name: '김사람',
+  age: 20
+};
+
+const expert: Developer = {
+  name: '김개발',
+  skills: ['javascript', 'react']
+};
+```
+
+<br />
+
+지금보면 Person과 Developer가 상당히 유사해보이죠? 이럴 땐 `interface`를 선언 할 때 다른 `interface`를 `extends`해서 상속받을 수 있습니다.
+
+<br />
+
+> practice4.ts
+
+```
+interface Person {
+  name: string;
+  age?: number; // 물음표가 들어갔다는 것은, 설정을 해도 되고 안해도 되는 값이라는 것을 의미합니다.
+}
+interface Developer extends Person {
+  skills: string[];
+}
+
+const person: Person = {
+  name: '김사람',
+  age: 20
+};
+
+const expert: Developer = {
+  name: '김개발',
+  skills: ['javascript', 'react']
+};
+
+const people: Person[] = [person, expert];
+```
+
+<br />
+<br />
+
+## Type Alias 사용하기
+
+`type`은 특정 타입에 별칭을 붙이는 용도로 사용합니다. 이를 사용하여 객체를 위한 타입을 설정할 수도 있고, 배열 또는 그 어떤 타입이던 별칭을 지어줄 수 있습니다.
+
+<br />
+
+> practice4.ts
+
+```
+type Person = {
+  name: string;
+  age?: number; // 물음표가 들어갔다는 것은, 설정을 해도 되고 안해도 되는 값이라는 것을 의미합니다.
+};
+
+// & 는 Intersection 으로서 두개 이상의 타입들을 합쳐줍니다.
+// 참고: https://www.typescriptlang.org/docs/handbook/advanced-types.html#intersection-types
+type Developer = Person & {
+  skills: string[];
+};
+
+const person: Person = {
+  name: '김사람'
+};
+
+const expert: Developer = {
+  name: '김개발',
+  skills: ['javascript', 'react']
+};
+
+type People = Person[]; // Person[] 를 이제 앞으로 People 이라는 타입으로 사용 할 수 있습니다.
+const people: People = [person, expert];
+
+type Color = 'red' | 'orange' | 'yellow';
+const color: Color = 'red';
+const colors: Color[] = ['red', 'orange'];
+```
+
+<br />
+
+이번에 `type`과 `interface`를 배웠는데, 어떤 용도로 사용해야할까요? 무엇을 사용하던 상관없지만 프로젝트에는 일관성을 가지고 하나를 사용하시는 것이 가장 좋습니다. 구 버전의 TypeScript에서는 둘의 차이가 존재했지만 현재에는 큰 차이가 없습니다. 다만 라이브러리를 작성하거나 다른 라이브러리를 위한 타입 지원 파일을 작성하게 될 때는 `interface`를 사용하는 것이 권장되고 있습니다.
+
+<br />
+
+## Generics
+`Generics`는 TypeScript에서 함수, 클래스, `interface`, `type`을 사용하게 될 때 여러 종류의 타입에 대하여 호환을 맞춰야하는 상황에서 사용하는 문법입니다.
+
+<br />
+
+#### 함수에서 Generics 사용하기
