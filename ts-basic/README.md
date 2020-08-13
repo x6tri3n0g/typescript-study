@@ -499,8 +499,158 @@ const colors: Color[] = ['red', 'orange'];
 <br />
 
 ## Generics
+
 `Generics`는 TypeScript에서 함수, 클래스, `interface`, `type`을 사용하게 될 때 여러 종류의 타입에 대하여 호환을 맞춰야하는 상황에서 사용하는 문법입니다.
 
 <br />
 
 #### 함수에서 Generics 사용하기
+
+예를 들어 우리가 객체A와 객체B를 합쳐주는 merge라는 함수를 만든다고 가정할 때 A와 B가 어떤 타입으로 올지 모르는 경우 `any`라는 타입을 사용할 수도 있습니다.
+
+<br />
+
+```
+function merge(a: any, b: any): any {
+  return {
+    ...a,
+    ...b
+  };
+}
+
+const merged = merge({ foo: 1 }, { bar: 1 });
+```
+
+<br />
+
+그런데 이런 방식은 TypeScript의 장점인 타입추론을 사용하지 않는 것이나 다름이 없습니다. 결과가 `any`라는 것은 즉 merged 안에 무엇이 있는지 알 수 없다는 것 입니다.
+바로 이런 상황에서 `Generics`을 사용합니다. `Generics`아래와 같이 사용합니다.
+
+<br />
+
+> src/practice5.ts
+
+```
+function merge<A, B>(a: A, b: B): A & B {
+  return {
+    ...a,
+    ...b
+  };
+}
+
+const merged = merge({ foo: 1 }, { bar: 1 });
+```
+
+<br />
+
+제네릭을 사용할 때는 이렇게 <T(Type)>처럼 꺽쇠 안에 타입의 이름을 넣어서 사용하며, 이렇게 설정해주면 제네릭에 해당하는 타입에는 뭐든 들어올 수 있게 되면서도, 사용 할 때 타입이 깨지지 않게 됩니다. 만약 함수에 이렇게 제네릭을 사용하게 된다면 **함수의 파라미터로 넣은 실제 값의 타입을 활용**하게 된답니다.
+또 다른 예시를 살펴보겠습니다.
+
+<br />
+
+> src/practice5.ts
+
+```
+function wrap<T>(param: T) {
+  return {
+    param
+  }
+}
+
+const wrapped = wrap(10);
+```
+
+<br />
+
+직접 확인해보면 T의 타입이 깨지지 않고 param: number로 들어간 것을 확인 할 수 있습니다.
+이렇게 함수에서 제네릭을 사용하면 파라미터로 다양한 타입을 넣을 수도 있고 타입 지원을 지켜낼 수 있습니다.
+
+<br />
+<br />
+
+#### interface에서 Generics 사용하기
+
+이번엔 `interface`에서 제네릭을 사용하는 방법을 알아봅시다.
+
+<br />
+
+> src/practice5.ts
+
+```
+interface Items<T> {
+  list: T[];
+}
+
+const items: Items<string> = {
+  list: ['a', 'b', 'c']
+};
+```
+
+<br />
+
+만약 `Items<string>`이라는 타입을 사용하게 된다면, `Items` 타입을 지니고 있는 객체의 `list` 배열은 `string[]` 타입을 지니고 있게 됩니다. 이렇게 함으로써, `list`가 숫자배열인 경우, 문자열배열인 경우, 객체배열, 또는 그 어떤 배열인 경우에도 하나의 `interface`만을 사용하여 타입을 설정할 수 있습니다.
+
+<br />
+<br />
+
+#### Type alias에서 Generics 사용하기
+
+`type`에서 제네릭을 사용하는 방법은 방금 `interface`에서 제네릭을 사용한 것과 매우 유사합니다. 방금 작성했던 코드를 `type`을 사용하는 코드로 변환해보겠습니다.
+
+<br />
+
+> src/practice5.ts
+
+```
+type Items<T> = {
+  list: T[];
+};
+
+const items: Items<string> = {
+  list: ['a', 'b', 'c']
+};
+```
+
+<br />
+<br />
+
+## 클래스에서 Generics 사용하기
+
+이번에는 클래스에서 제네릭을 사용해볼까요? Queue라는 클래스를 만들어 봅시다. Queue는 데이터를 등록할 수 있는 자료형이며, 먼저 등록(`enqueue`)한 항목을 먼저 뽑아올 수(`dequeue`) 있는 성질을 가지고 있습니다. 실행활에서 접할 수 있는 간단한 Queue 예시는 대기줄 입니다. 대기줄에서는 (누가 새치기를 하지 않는 이상) 가장 먼저 온 사람이 먼저 들어가죠? 이런 로직이 바로 Queue 입니다.
+이 Queue를 TypeScript로 구현해보겠습니다.
+
+<br />
+
+> src/practice6.ts
+
+```
+class Queue<T> {
+  list: T[] = [];
+  get length() {
+    return this.list.length;
+  }
+  enqueue(item: T) {
+    this.list.push(item);
+  }
+  dequeue() {
+    return this.list.shift();
+  }
+}
+
+const queue = new Queue<number>();
+queue.enqueue(0);
+queue.enqueue(1);
+queue.enqueue(2);
+queue.enqueue(3);
+queue.enqueue(4);
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+console.log(queue.dequeue());
+```
+
+<br />
+
+해당 코드를 컴파일하고 실행보면 우리가 만든 queue에 들어간 순서대로 숫자들이 나오는 것을 확인할 수 있습니다.
+예를 들어 `Queue<string>`이라면 문자열로 이루어진 Queue의 타입이 되겠죠?

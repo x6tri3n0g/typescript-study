@@ -46,6 +46,6 @@ const people: People = [person, expert];
 
 type Color = 'red' | 'orange' | 'yellow';
 
-const color: Color = 'red';
+// const color: Color = 'red';
 
 const colors: Color[] = ['red', 'orange'];
