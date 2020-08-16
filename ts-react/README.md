@@ -60,11 +60,13 @@ export default App;
 <br />
 
 ## 새로운 컴포넌트 만들기
+
 Greetings라는 새로운 컴포넌트를 작성
 
 <br />
 
 > ./src/Greetings.tsx
+
 ```
 import React from 'react';
 
@@ -87,6 +89,7 @@ export default Greetings;
 <br />
 
 ## React.FC의 장단점
+
 `React.FC`를 사용 할 때는 props의 타입을 Generics로 넣어서 사용합니다.([Generics](https://github.com/hyun940630/typescript-study/tree/master/ts-basic)에서 확인 가능) 이렇게 `React.FC`를 사용해서 얻을 수 있는 이점은 두가지가 있습니다.
 
 <br />
@@ -116,7 +119,7 @@ type GreetingsProps = {
 <br />
 
 결국 React.FC에 `children` props가 기본적으로 들어있는 것은 장점이 아닙니다. 차라리, `React.FC`를 사용하지 않고 GreetingsProps 타입을 통해 `children`이 있다 없다를 명백하게 명시하는 것이 덜 헷갈립니다.
-추가적으로, `React.FC`를 사용하는 경우 `defaultProps`가 제대로 작동하지 않습니다. 이는 정말 치명적입니다. 
+추가적으로, `React.FC`를 사용하는 경우 `defaultProps`가 제대로 작동하지 않습니다. 이는 정말 치명적입니다.
 
 <br />
 
@@ -168,6 +171,133 @@ export default App;
 <br />
 
 > Greeting.tsx
-```
 
 ```
+import React from 'react';
+
+type GreetingsProps = {
+  name: string;
+  mark: string;
+};
+
+const Greetings = ({ name, mark }: GreetingsProps) => (
+  <div>
+    Hello, {name} {mark}
+  </div>
+);
+
+Greetings.defaultProps = {
+  mark: '!'
+};
+
+export default Greetings;
+```
+
+<br />
+
+`React.FC`를 생략하면 잘 작동합니다! 때문에 `React.FC`를 생략하라고 권장합니다.
+
+<br />
+<br />
+
+## 컴포넌트에 생략할 수 있는 props 설정하기
+
+만약 컴포넌트에 생략 가능한 props가 있다면 `?`를 사용합니다.
+
+> Greetings.tsx
+
+```
+import React from 'react';
+
+type GreetingsProps = {
+  name: string;
+  mark: string;
+  optional?: string;
+};
+
+function Greetings({ name, mark, optional }: GreetingsProps) {
+  return (
+    <div>
+      Hello, {name} {mark}
+      {optional && <p>{optional}</p>}
+    </div>
+  );
+}
+
+Greetings.defaultProps = {
+  mark: '!'
+};
+
+export default Greetings;
+```
+
+<br />
+<br />
+
+## 컴포넌트에서 함수형 props 받아오기
+
+컴포넌트에 특정 함수를 props로 받아와야한다면 다음과 같이 타입을 지정합니다.
+
+```
+import React from 'react';
+
+type GreetingsProps = {
+  name: string;
+  mark: string;
+  optional?: string;
+  onClick: (name: string) => void; // 아무것도 리턴하지 않는다는 함수를 의미합니다.
+};
+
+function Greetings({ name, mark, optional, onClick }: GreetingsProps) {
+  const handleClick = () => onClick(name);
+  return (
+    <div>
+      Hello, {name} {mark}
+      {optional && <p>{optional}</p>}
+      <div>
+        <button onClick={handleClick}>Click Me</button>
+      </div>
+    </div>
+  );
+}
+
+Greetings.defaultProps = {
+  mark: '!'
+};
+
+export default Greetings;
+```
+
+<br/>
+
+App.tsx에서는 onClick 함수를 props로 넘겨줍니다
+
+> App.tsx
+
+```
+import React from 'react';
+import Greetings from './Greetings';
+
+const App: React.FC = () => {
+  const onClick = (name: string) => {
+    console.log(`${name} says hello`);
+  };
+  return <Greetings name="Hello" onClick={onClick} />;
+};
+
+export default App;
+```
+
+<br />
+
+App 컴포넌트에서 넘겨줘야 할 props가 없는지 확인합니다!
+
+<br />
+<br />
+<br />
+
+## 정리
+
+-   `React.FC` 형식은 좋지 않다.
+-   Functional Component 작성시 `화살표 함수(Arrow Function)`가 아닌 `function() {...}`으로 작성하는 것이 요즘 트랜드
+-   Props의 타입을 지정할 때 `type`과 `interface` 키워드를 사용할 수 있는데, 어떤 것을 사용해도 상관 없지만 **프로젝트 내에서 일관성을 지켜 사용한다.**
