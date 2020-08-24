@@ -85,6 +85,7 @@ const [todos, setTodos] = useState([] as Todo[]);
 <br />
 
 > src/MyForm.tsx
+
 ```
 import React, { useState } from 'react';
 
@@ -120,3 +121,87 @@ function MyForm({ onSubmit }: MyFormProps) {
 
 export default MyForm;
 ```
+
+<br />
+
+여기서 e 객체의 타입이 무엇일지, 타입스크립트를 처음 사용한다면 잘 모를 수도 있습니다. 그렇다고해서 e 객체의 타입이 무엇인지 외울 필요는 없습니다. 그냥 `onChange`에 커서를 올려봅니다.
+
+<br />
+
+함수에 커서를 올리면 어떤 타입을 사용해야하는지 알 수 있습니다. 그럼, `onChange`의 e 객체의 타입을 `React.ChangeEvent<HTMLInputElement>`로 지정해서 구현합니다.
+
+<br />
+
+> src/MyForm.tsx
+
+```
+import React, { useState } from 'react';
+
+type MyFormProps = {
+  onSubmit: (form: { name: string; description: string }) => void;
+};
+
+function MyForm({ onSubmit }: MyFormProps) {
+  const [form, setForm] = useState({
+    name: '',
+    description: ''
+  });
+
+  const { name, description } = form;
+
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setForm({
+      ...form,
+      [name]: value
+    });
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    onSubmit(form);
+    setForm({
+      name: '',
+      description: ''
+    }); // 초기화
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input name="name" value={name} onChange={onChange} />
+      <input name="description" value={description} onChange={onChange} />
+      <button type="submit">등록</button>
+    </form>
+  );
+}
+
+export default MyForm;
+```
+
+<br />
+
+> App.tsx
+
+```
+import React from 'react';
+import MyForm from './MyForm';
+
+const App: React.FC = () => {
+  const onSubmit = (form: { name: string; description: string }) => {
+    console.log(form);
+  };
+  return <MyForm onSubmit={onSubmit} />;
+};
+
+export default App;
+```
+
+<br />
+
+잘 작동합니다!
+
+<br />
+<br />
+<br />
+
+## useReducer
