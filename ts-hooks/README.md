@@ -380,3 +380,123 @@ export default ReducerSample;
 <br/>
 
 이번에 작성한 코드에는 type 뿐만 아니라 `count`, `text`, `color`와 같은 추가적인 값들이 있었습니다. 이러한 상황에서 `Action`이라는 타입스크립트 타입을 정의함으로써 리듀서에서 자동완성이 되어 개발에 편의성을 더해주고 액션을 디스패치하게 될 때에도 액션에 대한 타입검사가 이루어져 사전에 사소한 실수들을 예방할 수 있습니다.
+
+<br />
+<br />
+<br />
+
+## useRef
+ 
+`useRef`는 우리가 리책트 컴포넌트에서 외부 라이브러리의 인스턴스 또는 DOM을 특정 값 안에 담을 때 사용합니다. 추가적으로, 이를 통해 컴포넌트 내부에서 관리하고 있는 값을 관리할 때 유용하죠. 단, 이 값은 렌더링과 관계가 없어야 합니다.
+
+<br />
+
+### 변수 값 관리하기
+타입스크립트 환경에서 `useRef`를 통해 어떤 변수 값을 관리하고 싶을 땐 다음과 같은 코드를 작성합니다.
+
+<br />
+
+```
+const id = useRef<number>(0);
+const increaseId = () => {
+    id.current += 1;
+}
+```
+
+<br />
+
+`useRef`를 쓸땐 위와 같은 코드처럼 Generics를 통해 `~.current`의 값을 추론 할 수 있습니다.
+
+<br />
+<br />
+
+### DOM 관리하기
+ref 안에 DOM을 담을 때도 마찬가지입니다. 단, 초깃값은 `null`로 설정해주세요. 한번 MyForm 컴포넌트를 열어서, `handleSubmit` 이벹느가 등록됐을 때 첫번째 인풋에 포커스가 잡히도록 수정해보겠습니다.
+
+<br />
+
+```
+import React, { useRef, useState } from 'react';
+
+type MyFormProps = {
+    onSubmit: (form: { name: string; description: string }) => void;
+};
+
+function MyForm({ onSubmit }: MyFormProps) {
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const [form, setForm] = useState({
+        name: '',
+        description: '',
+    });
+
+    const { name, description } = form;
+
+    const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setForm({
+            ...form,
+            [name]: value,
+        });
+    };
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        onSubmit(form);
+        setForm({
+            name: '',
+            description: '',
+        }); // 초기화
+        if (!inputRef.current) {
+            return;
+        }
+        inputRef.current.focus();
+    };
+    return (
+        <form onSubmit={handleSubmit}>
+            <input
+                name="name"
+                value={name}
+                onChange={onChange}
+                ref={inputRef}
+            />
+            <input name="description" value={description} onChange={onChange} />
+            <button type="submit">등록</button>
+        </form>
+    );
+}
+
+export default MyForm;
+```
+
+<br />
+
+`inputRef` 쪽 코드를 보면 다음과 같이 Generic으로 `HTMLInputElement` 타입을 넣어주었습니다.
+
+<br />
+
+```
+const inputRef = useRef<HTMLInputElement>(null);
+```
+
+<br />
+
+추후 `ref`를 사용 할 때 어떤 타입을 써야 하지?라는 의문이 들것입니다. 그럴 땐, 에디터 상에서 커서를 원하는 DOM 위에 올려보세요. 그러면, 어떤 타입을 써야하는지 쉽게 알 수 있습니다.
+
+<br />
+
+추가적으로, `inputRef.current` 안의 값을 사용하려면 `null` 체킹을 해주어야합니다. 즉, 특정 값이 정말 유효한지 유효하지 않은지 체크하는건데요. 타입스크립트에서 만약 어떤 타입이 `undefined` 이거나 `null`일 수 있는 상황에서는, 해당 값이 유효한지 체킹하는 작업을 꼭 해주어야 자동완성도 잘 이루어지고, 오류도 사라집니다.
+
+직접 테스트 해보면 인풋에 값을 입력하고 등록버튼을 누르게 되면 인풋이 Reset되고 첫번째 인풋에 포커스가 잡히는 것을 확인할 수 있습니다.
+
+<br />
+<br />
+<br />
+
+## 정리
+- `useState`를 사용 할 때는 `useState<string>`과 같이 Generics를 사용합니다.
+- `useState`의 Generics는 상황에 따라 생략할 수도 있는데, 상태가 `null`인 상황이 발생할 수 있거나, 배열 또는 까다로운 객체를 다루는 경우 Generics를 명시해야합니다.
+- `useReducer`를 사용할 때는 액션에 대한 타입스크립트 타입들을 모두 준비해서 `|` 문자를 사용하여 결합시켜야합니다.
+- 타입스크립트 환경에서 `useReducer`를 쓰면 자동완성이 잘되고 타입체킹도 잘 됩니다.
+- `useRef`를 사용 할 때는 Generics로 타입을 정합니다.
+- `useRef`를 사용하여 DOM에 대한 정보를 담을 때는, 초깃값을 `null`로 설정해야 하고 값을 사용하기 위해서 `null` 체킹도 해주어야 합니다.
