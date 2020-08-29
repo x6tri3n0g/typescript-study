@@ -276,3 +276,107 @@ function reducer(state: number, action: Action): number
 <br />
 
 지금은 액션에 `type`값만 있기 때문에 굉장히 간단합니다. 만약 액션 객체에 필요한 다른 값들이 있는 경우엔 다른 값들도 타입 안에 명시를 해주면 추후 리듀서를 작성할 때 액션 객체 안에 무엇이 필요한지 자동완성을 통해 알 수 있습니다. 추가적으로, 새로운 액션을 디스패치할 때도 액션에 대한 타입스크립트 타입 검사도 해줄 수 있습니다.
+
+<br />
+<br />
+
+### Reducer Sample 구현하기
+
+<br />
+
+ReducerSample 파일을 작성해봅시다.
+
+<br />
+
+```
+import React, { useReducer } from 'react';
+
+type Color = 'red' | 'orange' | 'yellow';
+
+type State = {
+  count: number;
+  text: string;
+  color: Color;
+  isGood: boolean;
+};
+
+type Action =
+  | { type: 'SET_COUNT'; count: number }
+  | { type: 'SET_TEXT'; text: string }
+  | { type: 'SET_COLOR'; color: Color }
+  | { type: 'TOGGLE_GOOD' };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case 'SET_COUNT':
+      return {
+        ...state,
+        count: action.count // count가 자동완성되며, number 타입인걸 알 수 있습니다.
+      };
+    case 'SET_TEXT':
+      return {
+        ...state,
+        text: action.text // text가 자동완성되며, string 타입인걸 알 수 있습니다.
+      };
+    case 'SET_COLOR':
+      return {
+        ...state,
+        color: action.color // color 가 자동완성되며 color 가 Color 타입인걸 알 수 있습니다.
+      };
+    case 'TOGGLE_GOOD':
+      return {
+        ...state,
+        isGood: !state.isGood
+      };
+    default:
+      throw new Error('Unhandled action');
+  }
+}
+
+function ReducerSample() {
+  const [state, dispatch] = useReducer(reducer, {
+    count: 0,
+    text: 'hello',
+    color: 'red',
+    isGood: true
+  });
+
+  const setCount = () => dispatch({ type: 'SET_COUNT', count: 5 }); // count 를 넣지 않으면 에러발생
+  const setText = () => dispatch({ type: 'SET_TEXT', text: 'bye' }); // text 를 넣지 않으면 에러 발생
+  const setColor = () => dispatch({ type: 'SET_COLOR', color: 'orange' }); // orange 를 넣지 않으면 에러 발생
+  const toggleGood = () => dispatch({ type: 'TOGGLE_GOOD' });
+
+  return (
+    <div>
+      <p>
+        <code>count: </code> {state.count}
+      </p>
+      <p>
+        <code>text: </code> {state.text}
+      </p>
+      <p>
+        <code>color: </code> {state.color}
+      </p>
+      <p>
+        <code>isGood: </code> {state.isGood ? 'true' : 'false'}
+      </p>
+      <div>
+        <button onClick={setCount}>SET_COUNT</button>
+        <button onClick={setText}>SET_TEXT</button>
+        <button onClick={setColor}>SET_COLOR</button>
+        <button onClick={toggleGood}>TOGGLE_GOOD</button>
+      </div>
+    </div>
+  );
+}
+
+export default ReducerSample;
+```
+
+<br />
+
+이렇게 상태값이 객체로 이루어져 있고여러 타입의 값들이 들어가있다면 `State`라는 타입을 만들었듯이 이에 대한 타입을 정의해주면 됩니다. 
+
+<br/>
+
+이번에 작성한 코드에는 type 뿐만 아니라 `count`, `text`, `color`와 같은 추가적인 값들이 있었습니다. 이러한 상황에서 `Action`이라는 타입스크립트 타입을 정의함으로써 리듀서에서 자동완성이 되어 개발에 편의성을 더해주고 액션을 디스패치하게 될 때에도 액션에 대한 타입검사가 이루어져 사전에 사소한 실수들을 예방할 수 있습니다.
