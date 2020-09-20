@@ -98,3 +98,25 @@ function TodoItem({ todo }: TodoItemProps) {
 
 export default TodoItem;
 ```
+
+<br />
+
+> src/components/TodoItem.css
+```
+.TodoItem .text {
+    cursor: pointer;
+}
+
+.TodoItem.done .text {
+    color: #999999;
+    text-decoration: line-through;
+}
+
+.TodoItem .remove {
+    color: red;
+    margin-left: 4px;
+    cursor: pointer;
+}
+```
+
+<br />
