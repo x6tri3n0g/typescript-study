@@ -213,3 +213,95 @@ Context를 만들땐 위 코드와 같이 `createContext` 함수의 Generics를 
 <br />
 
 ### 액션을 위한 타입 선언하기
+
+<br />
+
+액션들을 위한 타입스크립트 타입들을 선언합니다. 우리는 총 3가지의 액션들을 만들겠습니다.
+
+-   `CREATE`: 새로운 항목 생성
+-   `TOGGLE`: done 값 반전
+-   `REMOVE`: 항목 제거
+
+<br />
+
+> src/contexts/TodosContext.tsx
+
+```
+...
+
+const TodosStateContext = createContext<TodosState | undefined>(undefined);
+
+type Action =
+    | { type: 'CREATE'; text: string }
+    | { type: 'TOGGLE'; text: number }
+    | { type: 'REMOVE'; text: number };
+```
+
+<br />
+
+이렇게 액션들의 타입을 선언해주고 나면, 우리가 디스패치를 위한 Context를 만들 때 디스패치 함수의 타입을 설정 할 수 있게 됩니다.
+
+<br />
+
+> src/contexts/TodoContext.tsx
+
+```
+...
+
+type Action =
+    | { type: 'CREATE'; text: string }
+    | { type: 'TOGGLE'; text: number }
+    | { type: 'REMOVE'; text: number };
+
+type TodosDispatch = Dispatch<Action>;
+
+const TodosDispatchContext = createContext<TodosDispatch | undefined>(
+    undefined
+);
+```
+
+<br />
+
+이렇게 `Dispatch`를 리액트 패키지에서 불러와서 Generic으로 액션들의 타입을 넣어주면 추후 컴포넌트에서 액션을 디스패치 할 때 액션들에 대한 타입을 검사 할 수 있습니다. 예를 들어서, 액션에 추가적으로 필요한 값(예: `text`, `id`)이 빠지면 오류가 발생합니다.
+
+<br />
+<br />
+
+### 리듀서 작성하기
+
+<br />
+
+이제 할 일 관리를 위한 리듀서를 만들어봅시다!
+
+<br />
+
+> src/contexts/TodosContext.tsx
+
+```
+...
+
+function todosReducer(state: TodosState, action: Action): TodosState {
+    switch (action.type) {
+        case 'CREATE':
+            const nextId = Math.max(...state.map((todo) => todo.id)) + 1;
+            return state.concat({
+                id: nextId,
+                text: action.text,
+                done: false,
+            });
+        case 'TOGGLE':
+            return state.map((todo) =>
+                todo.id === action.id ? { ...todo, done: !todo.done } : todo
+            );
+        case 'REMOVE':
+            return state.filter((todo) => todo.id !== action.id);
+        default:
+            throw new Error('Unhandled action');
+    }
+}
+```
+
+<br />
+<br />
+
+### TodosProvider 만들기
