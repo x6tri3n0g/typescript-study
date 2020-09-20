@@ -102,6 +102,7 @@ export default TodoItem;
 <br />
 
 > src/components/TodoItem.css
+
 ```
 .TodoItem .text {
     cursor: pointer;
@@ -122,7 +123,7 @@ export default TodoItem;
 <br />
 
 > src/components/TodoList.tsx
-이 컴포넌트는 `todos`라는 배열을 사용하여 여러개의 TodoItems 컴포넌트를 렌더링해주는 작업을 해줍니다. 아직은 이 배열에 대한 상태가 존재하지 않으므로 이 배열을 임시적으로 TodoList 컴포넌트 내부에서 선언하도록 하겠습니다.
+> 이 컴포넌트는 `todos`라는 배열을 사용하여 여러개의 TodoItems 컴포넌트를 렌더링해주는 작업을 해줍니다. 아직은 이 배열에 대한 상태가 존재하지 않으므로 이 배열을 임시적으로 TodoList 컴포넌트 내부에서 선언하도록 하겠습니다.
 
 ```
 import React from 'react';
@@ -158,3 +159,57 @@ function TodoList() {
 
 export default TodoList;
 ```
+
+<br />
+
+```
+$ npm start
+```
+
+을 실행하면 결과를 확인할 수 있습니다...!
+
+<br />
+<br />
+<br />
+
+## Context 준비하기
+
+<br />
+
+이제 본격적으로 Context API를 사용해봅시다. src 디렉터리에 contexts 디렉터리를 만들고, 그 안에 `TodosContext.tsx` 파일을 생성합니다.
+우리는 TodoContext.tsx 파일 안에 두 개의 Context를 만들어보도록 하겠습니다. 하나는 상태 전용 Context이고, 또 다른 하나는 디스패치 전용 Context입니다. 이렇게 두 개의 Context를 만들면 낭비 렌더링을 방지 할 수 있습니다.
+만약 상태와 디스패치 함수를 한 Context에 넣게 된다면, TodoForm 컴포넌트처럼 상태는 필요하지 않고 디스패치 함수만 필요한 컴포넌트도 상태가 업데이트 될 때 리렌더링하게 됩니다. 두 개의 Context를 만들어서 관리한다면 이를 방지할 수 있습니다.
+
+<br />
+
+### 상태전용 Context 만들기
+
+먼저 상태전용 Context를 선언해보겠습니다.
+
+<br />
+
+> src/contexts/TodoContext.tsx
+
+```
+import { createContext } from 'react';
+
+// 나중에 다른 컴포넌트에서 타입을 불러와서 쓸 수 있도록 내보내겠습니다.
+export type Todo = {
+    id: number;
+    text: string;
+    done: boolean;
+};
+
+type TodosState = Todo[];
+
+const TodosStateContext = createContext<TodosState | undefined>(undefined);
+```
+
+<br />
+
+Context를 만들땐 위 코드와 같이 `createContext` 함수의 Generics를 사용하여 Context에서 관리할 값의 상태를 설정해줄 수 있는데요. 우리가 추후 Provider를 사용하지 않았을 때에는 Context의 값이 `undefined`가 되어야 하므로, `<TodoState | undefined>`와 같이 Context의 값이 `TodosState`일 수도 있고 `undefined`일 수도 있다고 선언을 해주세요.
+
+<br />
+<br />
+
+### 액션을 위한 타입 선언하기
