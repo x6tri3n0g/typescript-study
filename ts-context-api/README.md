@@ -313,7 +313,7 @@ function todosReducer(state: TodosState, action: Action): TodosState {
 <br />
 
 ```
-import { Dispatch, createContext, useReducer } from 'react';
+import React, { Dispatch, createContext, useReducer } from 'react';
 
 ...
 
@@ -388,8 +388,9 @@ if (!todo) return null;
 <br />
 
 > src/contexts/TodosContext.tsx
+
 ```
-import { Dispatch, createContext, useContext, useReducer } from 'react';
+import React, { Dispatch, createContext, useContext, useReducer } from 'react';
 
 ...
 
@@ -417,3 +418,183 @@ export function useTodoDispatch() {
 <br />
 
 ## 컴포넌트에서 Context 사용하기
+
+<br />
+
+이제 우리가 만든 Context를 사용해줄 차례입니다.
+
+<br />
+
+### TodosContextProvider로 감싸기
+
+<br />
+
+가장 먼저 해야 할 작업은 App 컴포넌트에서 TodosContextProvider을 불러와서 기존 내용을 감싸주는 것입니다.
+
+<br />
+
+> src/App.tsx
+
+```
+import React from 'react';
+import TodoForm from './components/TodoForm';
+import TodoList from './components/TodoList';
+import { TodosContextProvider } from './contexts/TodosContext';
+
+function App() {
+    return (
+        <TodosContextProvider>
+            <TodoForm />
+            <TodoList />
+        </TodosContextProvider>
+    );
+}
+
+export default App;
+```
+
+<br />
+
+### TodoList에서 상태 조회하기
+
+<br />
+
+그 다음에는 TodoList 컴포넌트에서 Context 안의 상태를 조회하여 내용을 렌더링해보겠습니다. 우리가 커스텀 Hook을 만들었기 때문에 정말로 간단하게 처리 할 수 있습니다.
+
+<br />
+
+> src/components/TodoList.tsx
+
+```
+import React from 'react';
+import TodoItem from './TodoItem';
+import { useTodosState } from '../contexts/TodosContext';
+
+function TodoList() {
+    const todos = useTodosState();
+    return (
+        <ul>
+            {todos.map((todo) => (
+                <TodoItem todo={todo} key={todo.id} />
+            ))}
+        </ul>
+    );
+}
+
+export default TodoList;
+```
+
+<br />
+
+그냥 `useTodosState`를 불러와서 호출하기만 하면 현재 상태를 조회할 수 있습니다!
+
+<br />
+<br />
+
+### TodoForm에서 새 항목 등록하기
+
+<br />
+
+이제 TodoFrom에서 새 항목을 등록하는 작업을 구현해봅시다. `useTodosDispatch` Hook을 통해 `dispatch` 함수를 받아오고, 액션을 디스패치해보겠습니다.
+
+<br />
+
+> src/components/TodoForm.tsx
+```
+import React, { useState } from 'react';
+
+import { useTodosDispatch } from '../contexts/TodosContext';
+
+function TodoForm() {
+    const [value, setValue] = useState('');
+    const dispatch = useTodosDispatch();
+
+    const onSubmit = (e: React.FormEvent) => {
+        e.preventDefault();
+
+        // TODO: 새 항목 생성하기
+        dispatch({
+            type: 'CREATE',
+            text: value,
+        });
+        setValue('');
+    };
+
+    return (
+        <form onSubmit={onSubmit}>
+            <input
+                value={value}
+                placeholder="무엇을 하실 건가요?"
+                onChange={(e) => setValue(e.target.value)}
+            />
+            <button>등록</button>
+        </form>
+    );
+}
+
+export default TodoForm;
+```
+
+<br />
+
+앱을 실행해보면 Todo 등록이 잘 되는 것을 확인 할 수 있습니다!
+
+<br />
+<br />
+
+### TodoItem에서 항목 토글 및 제거하기
+
+<br />
+
+이번에는 TodoItem에서 항목을 클릭했을 때 `done` 값을 토글하고, 우측의 (X)를 클릭했을 때 제거하는 기능을 구현해보겠습니다. 아마 일반적으로 Context를 사용하지 않는 환경에서는 TodoItem 컴포넌트에서 `onToggle`, `onRemove` props를 가져와서 이를 호출하는 형태로 구현 할 것입니다. 하지만 지금과 같이 Context를 사용하고 있다면 굳이 이 함수들을 props를 통해서 가져오지 않고, 이 컴포넌트 내부에서 바로 액션을 디스패치하는 것도 꽤나 괜찮은 방법입니다.
+
+<br />
+
+> src/components/TodoItem.tsx
+
+```
+import './TodoItem.css';
+
+import { Todo, useTodosDispatch } from '../contexts/TodosContext';
+
+import React from 'react';
+
+type TodoItemProps = {
+    todo: Todo; // TodoContext에서 선언했던 타입을 불러왔습니다.
+};
+
+function TodoItem({ todo }: TodoItemProps) {
+    const dispatch = useTodosDispatch();
+
+    const onToggle = () => {
+        dispatch({
+            type: 'TOGGLE',
+            id: todo.id,
+        });
+    };
+
+    const onRemove = () => {
+        dispatch({
+            type: 'REMOVE',
+            id: todo.id,
+        });
+    };
+
+    return (
+        <li className={`TodoItem ${todo.done ? 'done' : ''}`}>
+            <span className="text" onClick={onToggle}>
+                {todo.text}
+            </span>
+            <span className="remove" onClick={onRemove}>
+                (X)
+            </span>
+        </li>
+    );
+}
+
+export default TodoItem;
+```
+
+<br />
+
+이제 TodoItem의 구현도 모두 끝났습니다! 브라우저에서 TodoItem 항목의 `done` 상태를 토글도해보고, 항목을 삭제도 해보세요.
