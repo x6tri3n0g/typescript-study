@@ -305,3 +305,56 @@ function todosReducer(state: TodosState, action: Action): TodosState {
 <br />
 
 ### TodosProvider 만들기
+
+<br />
+
+이제 TodosStateContext와 TodosDispatchContext와 Provider를 함께 사용하는 `TodosProvider`라는 컴포넌트를 만들어보겠습니다.
+
+<br />
+
+```
+import { Dispatch, createContext, useReducer } from 'react';
+
+...
+
+export function TodosContextProvider({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
+    const [todos, dispatch] = useReducer(todosReducer, [
+        {
+            id: 1,
+            text: 'Context API 배우기',
+            done: true,
+        },
+        {
+            id: 2,
+            text: 'TypeScript 배우기',
+            done: true,
+        },
+        {
+            id: 3,
+            text: 'TypeScript와 Context API 함께 사용하기',
+            done: false,
+        },
+    ]);
+
+    return (
+        <TodosDispatchContext.Provider value={dispatch}>
+            <TodosStateContext.Provider value={todos}>
+                {children}
+            </TodosStateContext.Provider>
+        </TodosDispatchContext.Provider>
+    );
+}
+```
+
+<br />
+
+우리가 방금 만든 컴포넌트는 나중에 App에서 불러와서 기존 내용을 감싸주어야 하므로 export를 통해 내보내줘야 하며 {children}을 통해 이 컴포넌트로 감쌀 수 있게 해줘야합니다.
+
+<br />
+<br />
+
+### 커스텀 Hooks 두 개 작성하기
