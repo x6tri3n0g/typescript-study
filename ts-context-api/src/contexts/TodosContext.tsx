@@ -1,4 +1,4 @@
-import { Dispatch, createContext, useReducer } from 'react';
+import { Dispatch, createContext, useContext, useReducer } from 'react';
 
 // 나중에 다른 컴포넌트에서 타입을 불러와서 쓸 수 있도록 내보내겠습니다.
 export type Todo = {
@@ -72,4 +72,16 @@ export function TodosContextProvider({
             </TodosStateContext.Provider>
         </TodosDispatchContext.Provider>
     );
+}
+
+export function useTodosState() {
+    const state = useContext(TodosStateContext);
+    if (!state) throw new Error('TodosProvider not found');
+    return state;
+}
+
+export function useTodoDispatch() {
+    const dispatch = useContext(TodosDispatchContext);
+    if (!dispatch) throw new Error('TodosProvider not found');
+    return dispatch;
 }
