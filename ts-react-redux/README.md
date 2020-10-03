@@ -146,3 +146,34 @@ const initialState: CounterState = {
 
 <br />
 
+마지막으로, 리듀서를 작성하고 내보내주겠습니다. 리듀서를 작성하는 것은, 우리가 이전에 `useReducer`의 사용법을 배웠을 때랑 똑같습니다. 함수의 반환 타입에 상태의 타입을 넣는 것을 잊지 마세요. 이를 통해 사소한 실수를 방지 할 수 있습니다.
+
+```
+function counter(state: CounterState = initialState, action: CounterAction) {
+    switch (action.type) {
+        case INCREASE:
+            return { count: state.count + 1 };
+        case DECREASE:
+            return { count: state.count - 1 };
+        case INCREASE_BY:
+            return { count: state.count + action.payload };
+        default:
+            return state;
+    }
+}
+
+export default counter;
+```
+
+<br />
+
+리듀서를 작성하는 과정에서 `case` 부분에서 액션의 `type` 값에 유효하지 않은 값을 넣게 된다면 오류가 나타나게 됩니다.
+
+<br />
+<br />
+<br />
+
+## 프로젝트에 리덕스 적용하기
+
+<br />
+
