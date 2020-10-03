@@ -67,4 +67,23 @@ const INCREASE_BY = 'counter/INCREASE_BY' as const;
 <br />
 <br />
 
-2.
+2. 액션 생성 함수 선언
+
+<br />
+
+액션 생성 함수를 작성 할 때에는 `function` 키워드를 사용해도 되고, 화살표 함수 문법을 사용해도 됩니다. 화살표 함수 문법을 사용하면 `return`을 생략 할 수 있어서 깔끔하기 때문에 우리는 화살표 함수를 사용하여 선언해보도록 하겠습니다. 아까 작성한 코드 하단에 아래 코드를 작성합니다.
+
+<br />
+
+```
+export const increase = () => ({ type: INCREASE });
+export const decrease = () => ({ type: DECREASE });
+export const increaseBy = (diff: number) => ({
+    type: INCREASE_BY,
+    payload: diff,
+});
+```
+
+<br />
+
+여기서 `increase`와 `decrease`의 경우엔 함수에서 따로 파라미터를 받아오지 않습니다. `increaseBy`의 경우엔 `diff`라는 값을 파라미터로 받아와서 액션의 `payload`값으로 설정해줍니다. 이 과정에서 값의 이름을 `payload`로 바꿔주었는데 이는 [FSA 규칙](https://github.com/redux-utilities/flux-standard-action)을 따르기 위함입니다. 이 규칙을 따름으로써 액션 객체의 구조를 일관성있게 가져갈 수 있어서 추후 리듀서에서 액션을 다룰 때에도 편하고, 읽기 쉽고, 액션에 관련된 라이브러리를 사용할 수도 있게 해줍니다. 다만, 꼭 따라야 할 필요는 없으니 만약 FSA가 불편하면 굳이 이렇게 `payload`라는 이름으로 넣을 필요는 없습니다. 추가적으로 액션 생성 함수들은 추후 컨테이너 컴포넌트에서 불러와서 사용해야 하므로 `export`해줍니다.
