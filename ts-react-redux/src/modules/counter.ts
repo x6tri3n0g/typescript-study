@@ -8,3 +8,8 @@ export const increaseBy = (diff: number) => ({
     type: INCREASE_BY,
     payload: diff,
 });
+
+type CounterAction =
+    | ReturnType<typeof increase>
+    | ReturnType<typeof decrease>
+    | ReturnType<typeof increaseBy>;

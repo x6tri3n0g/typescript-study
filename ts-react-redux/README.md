@@ -87,3 +87,29 @@ export const increaseBy = (diff: number) => ({
 <br />
 
 여기서 `increase`와 `decrease`의 경우엔 함수에서 따로 파라미터를 받아오지 않습니다. `increaseBy`의 경우엔 `diff`라는 값을 파라미터로 받아와서 액션의 `payload`값으로 설정해줍니다. 이 과정에서 값의 이름을 `payload`로 바꿔주었는데 이는 [FSA 규칙](https://github.com/redux-utilities/flux-standard-action)을 따르기 위함입니다. 이 규칙을 따름으로써 액션 객체의 구조를 일관성있게 가져갈 수 있어서 추후 리듀서에서 액션을 다룰 때에도 편하고, 읽기 쉽고, 액션에 관련된 라이브러리를 사용할 수도 있게 해줍니다. 다만, 꼭 따라야 할 필요는 없으니 만약 FSA가 불편하면 굳이 이렇게 `payload`라는 이름으로 넣을 필요는 없습니다. 추가적으로 액션 생성 함수들은 추후 컨테이너 컴포넌트에서 불러와서 사용해야 하므로 `export`해줍니다.
+
+<br />
+<br />
+
+3. 액션 객체들에 대한 type 준비하기
+
+<br />
+
+여기서의 "type"은 TypeScript의 타입을 의미합니다. 나중에 우리가 리듀서를 작성할 때 action 파라미터의 타입을 설정하기 위해서 우리가 만든 모든 액션들의 TypeScript 타입을 준비해줘야 합니다. 이는 다음과 같이 선언할 수 있습니다.
+
+<br />
+
+```
+type CounterAction =
+    | ReturnType<typeof increase>
+    | ReturnType<typeof decrease>
+    | ReturnType<typeof increaseBy>;
+```
+
+<br />
+
+여기서 사용된 `ReturnType`은 함수에서 반환하는 타입을 가져올 수 있게 해주는 유틸 타입입니다.
+
+<br />
+
+이전에 액션의 `type`값들을 선언 할 때 `as const`라는 키워드를 사용했습니다. 만약 이 작업을 처리하지 않으면 `ReturnType`을 사용하게 됐을 때 `type`의 타입이 무조건 `string`으로 처리되어버립니다. 그렇게 되면 나중에 리듀서를 제대로 구현 할 수 없습니다.
