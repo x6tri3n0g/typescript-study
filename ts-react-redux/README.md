@@ -113,3 +113,36 @@ type CounterAction =
 <br />
 
 이전에 액션의 `type`값들을 선언 할 때 `as const`라는 키워드를 사용했습니다. 만약 이 작업을 처리하지 않으면 `ReturnType`을 사용하게 됐을 때 `type`의 타입이 무조건 `string`으로 처리되어버립니다. 그렇게 되면 나중에 리듀서를 제대로 구현 할 수 없습니다.
+
+<br />
+<br />
+
+4. 상태의 타입과 상태의 초깃값 선언하기
+
+<br />
+
+counter 모듈에서 관리할 상태의 타입과 상태의 초깃값을 선언하겠습니다.
+
+<br />
+
+```
+type CounterState = {
+    count: number;
+}
+
+const initialState: CounterState = {
+    count: 0
+}
+```
+
+<br />
+
+간단합니다! 리덕스 상태의 타입을 선언 할 때에는 `type`을 써도되고 `interface`를 써도 됩니다. 프로젝트 내에서 둘 중 하나만을 선택해서 사용하는 것을 권장합니다.
+
+<br />
+<br />
+
+5. 리듀서 작성하기
+
+<br />
+
