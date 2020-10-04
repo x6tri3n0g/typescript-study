@@ -177,3 +177,35 @@ export default counter;
 
 <br />
 
+먼저 루트 리듀서를 만들어줍니다. modules 디렉터리에 index.ts 파일을 만들어서 다음과 같이 코드를 작성해줍니다.
+
+<br />
+
+> src/modules/index.ts
+
+```
+import { combineReducers } from 'redux';
+import counter from './counter';
+
+const rootReducer = combineReducers({
+    counter,
+});
+
+export default rootReducer;
+
+export type RootState = ReturnType<typeof rootReducer>;
+```
+
+<br />
+
+루트 리듀서를 만들 때에는 일반 JavaScript 환경과 동일하게 작성됩니다. 주의해야할 부분은 `RootState`라는 타입을 만들어서 내보내줘야합니다. 이 타입은 추후 우리가 컨테이너 컴포넌트를 만들게 될 때 스토어에서 관리하고 있는 상태를 조회하기 위해서 `useSelector`를 사용 할 때 필요로 합니다.
+
+<br />
+
+이제 루트 리듀서를 만들었으니 index.tsx 파일에서 스토어를 생성하고 Provider 컴포넌트를 사용하여 리액트 프로젝트에 리덕스를 적용해보겠습니다.
+
+<br />
+
+> index.tsx
+```
+```
