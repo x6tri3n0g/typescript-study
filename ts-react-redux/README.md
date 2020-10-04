@@ -345,6 +345,7 @@ TypeScript로 Container 컴포넌트를 작성 할 때 특별한 점은 `useSele
 <br />
 
 > src/App.tsx
+
 ```
 import CounterContainer from './containers/CounterContainer';
 import React from 'react';
@@ -361,3 +362,117 @@ export default App;
 <br />
 
 ## Presentational / Container 분리를 하지 않는다면?
+
+<br />
+
+만약 Presentational 컴포넌트와 Container 컴포넌트를 따로 분리하지 않는다면 어떻게 코드를 작성하는게 좋을까요? Dan Abramov님은 다음과 같이 언급했습니다.
+
+<br />
+
+> "Hooks let me do the same thing without an arbitrary division." (번역 : Hooks를 사용하여 컴포넌트를 임의적으로 분리하지 않아도 똑같은 작업을 할 수 있습니다.)
+
+<br />
+
+`Hooks`를 사용해서 똑같은 작업을 할 수 있다는게 어떤 의미일까요? Hooks를 사용해서 로직을 분리 할 수 있다는 것까지는 이해를 하겠는데 과연 리덕스를 사용할 때 정확히 어떻게 해야하는 것일까요? Presentational 컴포넌트에서 바로 `useSelector` / `useDispatch`를 사용하라는 걸까요?
+
+<br />
+
+즉, 컴포넌트를 사용 할 때 props로 필요한 값을 받아와서 사용하게 하지 말고, `useSelector`와 `useDispatch`로 이루어진 커스텀 Hook을 만들어서 이를 사용하라는 의미입니다.
+
+<br />
+
+Counter 컴포넌트를 리덕스와 연동하기 위하여 `useCounter`라는 커스텀 Hook을 작성해보겠습니다.
+
+<br />
+
+src 디렉터리에 hooks 디렉터리를 만들고, 그 안에 useCounter.tsx 파일을 다음과 같이 작성해보세요.
+
+<br />
+
+> src/hooks/useCounter.tsx
+
+```
+import { decrease, increase, increaseBy } from '../modules/counter';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { RootState } from '../modules';
+import { useCallback } from 'react';
+
+export default function useCounter() {
+    const count = useSelector((state: RootState) => state.counter.count);
+    const dispatch = useDispatch();
+
+    const onIncrease = useCallback(() => dispatch(increase()), [dispatch]);
+    const onDecrease = useCallback(() => dispatch(decrease()), [dispatch]);
+    const onIncreaseBy = useCallback(
+        (diff: number) => dispatch(increaseBy(diff)),
+        [dispatch]
+    );
+
+    return {
+        count,
+        onIncrease,
+        onDecrease,
+        onIncreaseBy,
+    };
+}
+```
+
+<br />
+
+우리가 Container를 작성하는 것과 비슷하게 리덕스와 연동하는 작업이 프리젠테이셔널 컴포넌트에서 분리되었지만, 컴포넌트가 아니라 Hook 형태로 구현이 되었습니다. 그렇다면 이제 이 `useCounter` Hook을 Presentational 컴포넌트에서 사용해주면 됩니다. 사실, 이제 부터는 Prsentational과 Container의 구분이 사라지기 때문에 굳이 프리젠테이셔널 컴포넌트라고 부를 필요도 없습니다.
+
+<br />
+
+Counter.tsx 파일을 다음과 같이 수정해주세요.
+
+<br />
+
+> src/components/Counter.tsx
+
+```
+import React from 'react';
+import useCounter from '../hooks/useCounter';
+
+function Counter() {
+    const { count, onIncrease, onDecrease, onIncreaseBy } = useCounter();
+
+    return (
+        <div>
+            <h1>{count}</h1>
+            <button onClick={onIncrease}>+1</button>
+            <button onClick={onDecrease}>-1</button>
+            <button onClick={() => onIncreaseBy(5)}>+5</button>
+        </div>
+    );
+}
+
+export default Counter;
+```
+
+<br />
+
+이제 필요한 함수와 값을 props로 받아오는 것이 아니라, `useCounter` Hook을 통해서 받아왔습니다. 이제 Container 컴포넌트들은 불필요해졌으니, containers 디렉터리를 제거하세요. 그리고 App 컴포넌트에서 CounterContainer 대신 Counter를 렌더링해봅시다.
+
+<br />
+
+> src/App.tsx
+
+```
+import Counter from './components/Counter';
+import React from 'react';
+
+function App() {
+    return <Counter />;
+}
+
+export default App;
+```
+
+<br />
+
+이제 이전과 완전히 같이 작동합니다.
+
+<br />
+
+Hooks가 존재하기 전에는, Container 컴포넌트를 만들 때 `connect()` 함수를 통하여 HOC 패턴을 통하여 컴포넌트와 리덕스를 연동해주었기 때문에 props로 필요한 값들을 전달해주는 것이 필수였지만, 이제는 더 이상 그렇지 않습니다. Presentational/Container 컴포넌트 패턴이 여러분이 이미 익숙하다면 기존 패턴을 고수하는 것도 괜찮습니다. 다만, 이렇게 Hooks를 통하여 로직을 분리하는 것도 정말 괜찮은 패턴이니 새로 작성하는 컴포넌트부터 이렇게 커스텀 Hooks를 작성하는 방식으로 시도하는 것도 정말 좋은 방법이라고 생각합니다.

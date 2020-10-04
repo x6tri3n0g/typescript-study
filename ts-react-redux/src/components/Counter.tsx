@@ -1,18 +1,9 @@
 import React from 'react';
+import useCounter from '../hooks/useCounter';
 
-type CounterProps = {
-    count: number;
-    onIncrease: () => void;
-    onDecrease: () => void;
-    onIncreaseBy: (diff: number) => void;
-};
+function Counter() {
+    const { count, onIncrease, onDecrease, onIncreaseBy } = useCounter();
 
-function Counter({
-    count,
-    onIncrease,
-    onDecrease,
-    onIncreaseBy,
-}: CounterProps) {
     return (
         <div>
             <h1>{count}</h1>
