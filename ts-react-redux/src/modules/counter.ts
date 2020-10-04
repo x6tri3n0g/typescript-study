@@ -34,7 +34,7 @@ function counter(state: CounterState = initialState, action: CounterAction) {
         case INCREASE_BY:
             return { count: state.count + action.payload };
         case RESET:
-            return { count: 0 };
+            return { count: state.count - state.count };
         default:
             return state;
     }

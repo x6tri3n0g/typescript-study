@@ -476,3 +476,169 @@ export default App;
 <br />
 
 Hooks가 존재하기 전에는, Container 컴포넌트를 만들 때 `connect()` 함수를 통하여 HOC 패턴을 통하여 컴포넌트와 리덕스를 연동해주었기 때문에 props로 필요한 값들을 전달해주는 것이 필수였지만, 이제는 더 이상 그렇지 않습니다. Presentational/Container 컴포넌트 패턴이 여러분이 이미 익숙하다면 기존 패턴을 고수하는 것도 괜찮습니다. 다만, 이렇게 Hooks를 통하여 로직을 분리하는 것도 정말 괜찮은 패턴이니 새로 작성하는 컴포넌트부터 이렇게 커스텀 Hooks를 작성하는 방식으로 시도하는 것도 정말 좋은 방법이라고 생각합니다.
+
+<br />
+<br />
+<br />
+
+## 투두리스트 리덕스 모듈 만들기
+
+<br />
+
+계속해서 연습을 더 해보기 위하여 조금 더 복잡해진 리덕스 코드를 작성해보겠습니다. 이번엔 투두리스트를 만들기 위한 리덕스 모듈을 준비하겠습니다. 이번에는 아까 구현했던 카운터와 달리 액션 객체를 만드는 과정에서 추가적으로 필요한 페이로드(payload) 값이 액션마다 다릅니다.
+
+<br />
+
+modules 디렉터리에 todos.ts 파일을 만들고 다음 코드들을 작성합니다.
+
+<br />
+
+> src/modules/todos.ts
+
+<br />
+
+1. Action type / Action 생성함수 / Action의 타입스트립트 타입 선언
+
+<br />
+
+먼저 액션에 관한 코드들 부터 작성해보겠습니다. 이전엔 카운터를 구현할 때 작성했던 코드와 형식이 동일합니다.
+
+<br />
+
+```
+// 액션 type
+const ADD_TODO = 'todos/ADD_TODO' as const;
+const TOGGLE_TODO = 'todos/TOGGLE_TODO' as const;
+const REMOVE_TODO = 'todos/REMOVE_TODO' as const;
+
+// 액션 생성 함수
+export const addTodo = (text: string) => ({
+    type: ADD_TODO,
+    payload: text,
+});
+
+export const toggleTodo = (id: number) => ({
+    type: TOGGLE_TODO,
+    payload: id,
+});
+
+export const removeTodo = (id: number) => ({
+    type: REMOVE_TODO,
+    payload: id,
+});
+
+// 액션들의 타입스크립트 타입 준비
+type TodosAction =
+    | ReturnType<typeof addTodo>
+    | ReturnType<typeof toggleTodo>
+    | ReturnType<typeof removeTodo>;
+```
+
+<br />
+<br />
+
+2. 상태를 위한 타입 및 초기 상태 선언
+
+<br />
+
+그 다음에는 상태를 위한 타입 및 초기 상태를 선언해주겠습니다. 이번 리덕스 모듈의 상태는 배열의 타입으로 준비해보겠습니다.
+
+<br />
+
+```
+// 상태를 위한 타입 선언
+export type Todo = {
+    id: number;
+    text: string;
+    done: boolean;
+};
+type TodoState = Todo[];
+
+// 초기값 설정
+const initialState: TodoState = [
+    {
+        id: 1,
+        text: '타입스크립트 배우기',
+        done: true,
+    },
+    {
+        id: 2,
+        text: '타입스크립트와 리덕스 함께 사용해보기',
+        done: true,
+    },
+    {
+        id: 3,
+        text: '투두리스트 만들기',
+        done: false,
+    },
+];
+```
+
+<br />
+
+여기서 `Todo` 타입은 나중에 컴포넌트에서 불러와서 사용 할 것이기 때문에 내보내주었습니다. 초깃값에 들어있는 항목들의 내용은 마음대로 적어주어도 됩니다. 빈 배열이여도 상관없습니다.
+
+<br />
+<br />
+
+3. 리듀서 구현하기
+
+<br />
+
+이제 리듀서를 구현해주겠습니다.
+
+<br />
+
+```
+function todos(
+    state: TodosState = initialState,
+    action: TodosAction
+): TodosState {
+    switch (action.type) {
+        case ADD_TODO:
+            const nextId = Math.max(...state.map((todo) => todo.id)) + 1;
+            return state.concat({
+                id: nextId,
+                text: action.payload,
+                done: false,
+            });
+        case TOGGLE_TODO:
+            return state.map((todo) =>
+                todo.id === action.payload
+                    ? { ...todo, done: !todo.done }
+                    : todo
+            );
+        case REMOVE_TODO:
+            return state.filter((todo) => todo.id !== action.payload);
+        default:
+            return state;
+    }
+}
+
+export default todos;
+```
+
+<br />
+
+새 항목을 만들 때 마다 고유 id를 설정하기 위해서 현재 상태의 모든 항목들의 id를 체크하고 그 중 가장 큰 값을 사용하도록 처리하였습니다. 리듀서를 모두 다 작성하고 나중에 리듀서에 추가해줄 수 있도록 꼭 내보내주세요.
+
+<br />
+
+리듀서를 작성하는 과정에서 확인했겠지만, case에 따라 액션의 타입이 제대로 추론되고 있습니다.이제 todos 리덕스 모듈이 모두 작성완료되었습니다!
+
+<br />
+<br />
+
+### 루트 리듀서에 등록하기
+
+<br />
+
+우리가 방금 만든 리듀서를 루트 리듀서에 등록해봅시다.
+
+<br />
+
+> src/modules/index.ts
+
+```
+
+```
