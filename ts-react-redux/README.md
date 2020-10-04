@@ -295,3 +295,69 @@ export default Counter;
 <br />
 
 ## 카운터 Container 컴포넌트 만들기
+
+<br />
+
+그 다음에는 리덕스 스토어 안에 있는 상태를 조회하여 사용하고, 액션도 디스패치하는 컨테이너 컴포넌트를 만들어봅시다.
+src 디렉터리에 containers 디렉터리를 만들고, 그 안에 CounterContainer.tsx 파일을 생성하여 다음 코드를 작성합니다.
+
+<br />
+
+> src/containers/CounterContainer.tsx
+
+```
+import { decrease, increase, increaseBy } from '../modules/counter';
+import { useDispatch, useSelector } from 'react-redux';
+
+import Counter from '../components/Counter';
+import React from 'react';
+import { RootState } from '../modules';
+
+function CounterContainer() {
+    const count = useSelector((state: RootState) => state.counter.count);
+    const dispatch = useDispatch();
+
+    const onIncrease = () => dispatch(increase());
+    const onDecrease = () => dispatch(decrease());
+    const onIncreaseBy = (diff: number) => dispatch(increaseBy(diff));
+
+    return (
+        <Counter
+            count={count}
+            onIncrease={onIncrease}
+            onDecrease={onDecrease}
+            onIncreaseBy={onIncreaseBy}
+        />
+    );
+}
+
+export default CounterContainer;
+```
+
+<br />
+
+TypeScript로 Container 컴포넌트를 작성 할 때 특별한 점은 `useSelector` 부분에서 `state`의 타입을 `RootState`로 지정해서 사용한다는 것 외에는 없습니다.
+
+<br />
+
+이제, 이 CounterContainer 컴포넌트를 App 컴포넌트에서 렌더링해보세요.
+
+<br />
+
+> src/App.tsx
+```
+import CounterContainer from './containers/CounterContainer';
+import React from 'react';
+
+function App() {
+    return <CounterContainer />;
+}
+
+export default App;
+```
+
+<br />
+<br />
+<br />
+
+## Presentational / Container 분리를 하지 않는다면?
