@@ -1,4 +1,4 @@
-import { decrease, increase, increaseBy } from '../modules/counter';
+import { decrease, increase, increaseBy, reset } from '../modules/counter';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { RootState } from '../modules';
@@ -14,11 +14,13 @@ export default function useCounter() {
         (diff: number) => dispatch(increaseBy(diff)),
         [dispatch]
     );
+    const onReset = useCallback(() => dispatch(reset()), [dispatch]);
 
     return {
         count,
         onIncrease,
         onDecrease,
         onIncreaseBy,
+        onReset,
     };
 }
