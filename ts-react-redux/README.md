@@ -640,5 +640,80 @@ export default todos;
 > src/modules/index.ts
 
 ```
+import { combineReducers } from 'redux';
+import counter from './counter';
+import todos from './todos';
+
+const rootReducer = combineReducers({
+    counter,
+    todos,
+});
+
+export default rootReducer;
+
+export type RootState = ReturnType<typeof rootReducer>;
+```
+
+<br />
+<br />
+<br />
+
+## 투두리스트 컴포넌트 준비하기
+
+<br />
+
+이제 투두리스트를 구현하기 위한 컴포넌트들을 준비해보겠습니다. 이번에는 굳이 Presentational/Container 컴포넌트를 분리하지 않고, Hooks를 통해 구현해보겠습니다.
+
+<br />
+
+우리가 앞으로 만들 컴포넌트는 총 3개입니다.
+
+<br />
+
+-   `TodoInsert`: 새 항목을 등록 할 수 있는 컴포넌트입니다.
+-   `TodoItem` : 할 일 정보를 보여주는 컴포넌트입니다.
+-   `TodoList` : 여러 개의 TodoItem 컴포넌트를 보여주는 컴포넌트입니다.
+
+<br />
+
+> src/components/TodoInsert.tsx
+
+<br />
+
+input의 상태는 `useState`를 사용하여 로컬 상태로 관리해주겠습니다. 실제로 등록하는 함수의 경우 우리가 추후 커스텀 Hook을 작성해서 구현하겠습니다. 물론, 특별하게 복잡한 로직이 없기 때문에 여기에서 `useDispatch`를 사용해도 상관은 없습니다.
+
+<br />
 
 ```
+import React, { ChangeEvent, FormEvent, useState } from 'react';
+
+function TodoInsert() {
+    const [value, setValue] = useState('');
+    const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+        setValue(e.target.value);
+    };
+    const onSubmit = (e: FormEvent) => {
+        e.preventDefault();
+
+        // TODO: 커스텀 Hook을 사용해 새 항목을 등록
+        setValue('');
+    };
+    return (
+        <form onSubmit={onSubmit}>
+            <input
+                placeholder="할 일을 입력하세요."
+                value={value}
+                onChange={onChange}
+            />
+            <button type="submit">등록</button>
+        </form>
+    );
+}
+
+export default TodoInsert;
+```
+
+<br />
+<br />
+
+> src/components/TodoItem.tsx
