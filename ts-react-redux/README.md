@@ -207,5 +207,91 @@ export type RootState = ReturnType<typeof rootReducer>;
 <br />
 
 > index.tsx
+
 ```
+import './index.css';
+
+import * as serviceWorker from './serviceWorker';
+
+import App from './App';
+import { Provider } from 'react-redux';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { createStore } from 'redux';
+import rootReducer from './modules';
+
+const store = createStore(rootReducer);
+
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
+);
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://bit.ly/CRA-PWA
+serviceWorker.unregister();
 ```
+
+<br />
+<br />
+<br />
+
+## 카운터 Presentational 컴포넌트 만들기
+
+<br />
+
+이제 프리젠테이셔널 컴포넌트를 만들어보겠습니다. 우리가 이번에는 프리젠테이셔널 컴포넌트와 컨테이너 컴포넌트를 구분해서 만들어보도록 하겠습니다. 하지만, 참고로 `Dan Abramov`님이 자신이 쓴 [Presentational and Container Components](https://medium.com/@dan_abramov/smart-and-dumb-components-7ca2f9a7c7d0) 포스트를 수정하면서 덧붙였듯이, Presentational/Container 구조는 필수적이지 아닙니다. 따라서 사용은 자유롭습니다.
+
+<br />
+
+먼저, 이 구조로 컴포넌트들을 작성해보고, 그 다음에는 컨테이너를 따로 구분하지 않는다면 어떻게 구현하는게 좋을지도 알아보겠습니다.
+
+<br />
+
+src 디렉터리에 components 디렉터리를 만들고 그 안에 `Counter.tsx`를 다음과 같이 작성합니다.
+
+<br />
+
+> src/components/Counter.tsx
+
+```
+import React from 'react';
+
+type CounterProps = {
+    count: number;
+    onIncrease: () => void;
+    onDecrease: () => void;
+    onIncreaseBy: (diff: number) => void;
+};
+
+function Counter({
+    count,
+    onIncrease,
+    onDecrease,
+    onIncreaseBy,
+}: CounterProps) {
+    return (
+        <div>
+            <h1>{count}</h1>
+            <button onClick={onIncrease}>+1</button>
+            <button onClick={onDecrease}>-1</button>
+            <button onClick={() => onIncreaseBy(5)}>+5</button>
+        </div>
+    );
+}
+
+export default Counter;
+```
+
+<br />
+
+컴포넌트에서 필요한 값과 함수들은 모두 props로 받아오도록 처리했습니다. 위 컴포넌트에서는 3개의 버튼을 보여주는데 3번째 버튼의 경우 클릭이 되면 5를 `onIncreaseBy`함수의 파라미터로 설정하여 호출합니다.
+
+<br />
+<br />
+<br />
+
+## 카운터 Container 컴포넌트 만들기
