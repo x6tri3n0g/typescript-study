@@ -1,12 +1,16 @@
+# 시작하기
+
+<br />
+
 > `React`와 `React Native`으로 개발해오며 지금까지 JavaScript(ES6)를 주로 사용해왔습니다. 따라서 `TS for JS Programmer`를 제외한 나머지 Section은 가볍운 정리만 하겠습니다.
 
 <br />
 <br />
 <br />
 
-# TS for the New Programmer
+## TS for the New Programmer
 
-## JavaScript의 짧은 역사(What is JavaScript? A Brief History)
+### JavaScript의 짧은 역사(What is JavaScript? A Brief History)
 
 JS는 처음에 브라우저를 위한 스크립팅 언어로 만들어졌습니다. 그러나 요즘날 많은 개발자들은 오직 JavaScript만을 이용하여 전체 스택을 프로그래밍하고 있습니다.
 
@@ -31,11 +35,11 @@ if (1 < x < 3) {
 <br />
 <br />
 
-## TypeScript: 정적 타입 검사자(TypeScript: A Static Type Checker)
+### TypeScript: 정적 타입 검사자(TypeScript: A Static Type Checker)
 
 TypeScript와 JavaScript는 어떤 관계일까요?
 
-### 구문(Syntax)
+#### 구문(Syntax)
 
 TS는 JS 구문이 허용되는, JS의 **상위집합** 언어입니다. 구문은 프로그램을 만들기 위해 코드를 작성하는 방법을 의미합니다. 예를 들어, 다음 코드는 `)`이 없으므로 **구문** 오류입니다.
 
@@ -48,7 +52,7 @@ TS는 독특한 구문 때문에 JS를 오류로 보지 않습니다. 즉, 어�
 
 <br />
 
-### 타입(Types)
+#### 타입(Types)
 
 TS는 다른 종류의 값들을 사용할 수 있는 방법이 추가된 타입이 있는 상위 집합입니다.
 
@@ -68,7 +72,7 @@ console.log(4 / []);
 
 <br />
 
-### 런타임 특성(Runtime Behavior)
+#### 런타임 특성(Runtime Behavior)
 
 > 런타임(Runtime)?
 > TS는 JS의 **런타임 특성** 을 가진 프로그래밍 언어입니다. 예를 들어, JS에서 0으로 나누는 행동은 런타임 예외로 처리하지 않고 `Infinity` 값을 반환합니다. 논리적으로, TS는 JS 코드의 런타임 특성을 **절대** 변화시키지 않습니다.
@@ -79,7 +83,7 @@ JS와 동일한 런타임 동작을 유지하는 것은 프로그램 작동을 �
 
 <br />
 
-### 삭제된 타입(Erased Types)
+#### 삭제된 타입(Erased Types)
 
 계략적으로, TS의 컴파일러가 코드 검사를 마치면 타임을 삭제해서 결과적으로 **"컴파일된"** 코드를 만듭니다. 즉, 코드가 한 번 컴파일되면, 결과로 나온 일반 JS 코드에는 타입 정보가 없습니다.
 
@@ -89,7 +93,7 @@ JS와 동일한 런타임 동작을 유지하는 것은 프로그램 작동을 �
 
 <br />
 
-## JavaScript와 TypeScript 학습(Learning JavaScript and TypeScript)
+### JavaScript와 TypeScript 학습(Learning JavaScript and TypeScript)
 
 JavaScript를 배우고 TypeScript를 학습하세요!
 
@@ -97,7 +101,7 @@ JavaScript를 배우고 TypeScript를 학습하세요!
 <br />
 <br />
 
-# TS for OOP Programmer
+## TS for OOP Programmer
 
 ✋🏻
 
@@ -105,16 +109,16 @@ JavaScript를 배우고 TypeScript를 학습하세요!
 <br />
 <br />
 
-# TS for Functional Programmers
+## TS for Functional Programmers
 
 <br />
 <br />
 <br />
 
-# TS for the JS Programmer
+## TS for the JS Programmer
 
 <br />
 <br />
 <br />
 
-# 5분안에 보는 TypeScript
+## 5분안에 보는 TypeScript
