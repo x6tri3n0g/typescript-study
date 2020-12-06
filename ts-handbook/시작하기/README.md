@@ -78,18 +78,24 @@ JavaScript를 배우고 TypeScript를 학습하세요!
 <br />
 
 # TS for OOP Programmer
+✋🏻
 
-
+<br />
+<br />
 <br />
 
 # TS for Functional Programmers
 
 
 <br />
+<br />
+<br />
 
 # TS for the JS Programmer
 
 
+<br />
+<br />
 <br />
 
 # 5분안에 보는 TypeScript
