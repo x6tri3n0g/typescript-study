@@ -138,7 +138,69 @@ JS가 동작하는 방식을 이해함으로써 TS는 JS 코드를 받아들이�
 <br />
 
 ### 타입 정의하기(Defining Types)
+JS는 다양한 디자인 패턴을 가능하게 하는 동적 언어입니다. 몇몇 디자인 패턴은 자동으로 타입을 제공하기 힘들 수 있는데 (동적 프로그래밍을 사용하고 있을 것이기 때문에) 이러한 경우에 TS는 타입이 무엇이 되어야 하는지 명시 가능한 JS 언어의 확장을 지원합니다.
 
+<br />
+
+다음은 `name: string`과 `id: number`을 포함하는 추론 타입을 가진 객체를 생성하는 예제입니다.
+```ts
+const user = {
+    name: "Hayes",
+    id: 0,
+};
+```
+이 객체의 형태를 명시적으로 나타내기 위해서는 `interface`로 선언합니다.
+```ts
+interface User {
+    name: string;
+    id: number;
+}
+```
+이제 변수 선언 뒤에 `: TypeName`의 구문을 사용해 JS 객체가 새로운 `interface`의 형태를 따르고 있음을 선언할 수 있습니다.
+```ts
+interface User {
+    name: String;
+    id: number;
+}
+// ---cut---
+const user: User = {
+    name: "Hayes",
+    id: 0,
+};
+```
+해당 인터페이스에 맞지 않은 객체를 생성하면 TS는 __경고__ 를 줍니다.
+```ts
+//@errors: 2322
+interface User {
+    name: string;
+    id: number
+}
+
+const user: User = {
+    username: "Hayes",  // User에서 정의한 객체 요소가 아닙니다!
+    id: 0,
+},
+```
+JS는 클래스와 객체 지향 프로그래밍을 지원하기 때문에, TS 또한 동일합니다. - 인터페이스는 클래스로도 선언할 수 있습니다.
+```ts
+interface User {
+    name: string;
+    id: number;
+}
+
+class UserAccount {
+    name: string;
+    id: number;
+
+    constructor(name: string, id: number) {
+        this.name = name;
+        this.id = id;
+    }
+}
+
+const user: User = new UserAccount("Murphy", 1);
+```
+인터페이
 <br />
 <br />
 <br />
