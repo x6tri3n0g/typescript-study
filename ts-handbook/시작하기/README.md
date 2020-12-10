@@ -246,6 +246,56 @@ TS는 몇 가지 타입을 추가해 인터페이스를 확장했습니다. 예�
 
 #### 유니언(Unions)
 
+**유니언은 타입이 여러 타입 중 하나일 수 있음을 선언하는 방법입니다.** 예를 들어, `boolean` 타입을 `true` 또는 `false`로 설명할 수 있습니다.
+
+```ts
+type MyBool = true | false;
+```
+
+참고: `MyBool` 위에 마우스를 올린다면, `boolean`으로 분류된 것을 볼 수 있습니다. - 구조적 타입 시스템의 프로퍼티
+
+유니언 타입이 가장 많이 사용된 사례 중 하나는 값이 다음과 같이 허용되는 `string` 또는 `number`의 리터럴집합을 설명하는 것입니다.
+
+```ts
+type WindowStates = 'open' | 'closed' | 'minimized';
+type LockStates = 'locked' | 'unclocked';
+type OddNumbersUnderTen = 1 | 3 | 5 | 7 | 9;
+```
+
+유니언은 다양한 타입을 처리하는 방법을 제공하는데, 예를 들어 `array` 또는 `string`을 받는 함수가 있을 수 있습니다.
+
+```ts
+function getLength(obj: string | string[]) {
+    return obj.length;
+}
+```
+
+TS는 코드가 시간에 따라 변수가 변경되는 방식을 이해하며, 이러한 검사를 사용해 타입을 골라낼 수 있습니다.
+
+|   Type    |             Predicate              |
+| :-------: | :--------------------------------: |
+|  string   |      `typeof s === "string"`       |
+|  number   |      `typeof n === "number"`       |
+|  boolean  |      `typeof b === "boolean"`      |
+| undefined | `typeof undefined === "undefined"` |
+| function  |     `typeof f === "function"`      |
+|   array   |         `Array.isArray(a)`         |
+
+예를 들어, `typeof obj === "string"`을 이용하여 `string`과 `array`를 구분할 수 있으며 TS는 객체가 다른 코드 경로에 있음을 알게 됩니다.
+
+```ts
+function wrapInArray(obj: string | string[]) {
+    if (typeof obj === 'string') {
+        return [obj];
+        //      ^?
+    } else {
+        return obj;
+    }
+}
+```
+
+#### 제네릭 (Generics)
+
 <br />
 <br />
 <br />
