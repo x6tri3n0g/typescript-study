@@ -294,7 +294,120 @@ function wrapInArray(obj: string | string[]) {
 }
 ```
 
+<br />
+
 #### 제네릭 (Generics)
+
+TS 제네릭 시스템에 대해 자세히 알아볼 수 있지만, 간단하게 설명해서 **제네릭은 타입에 변수를 제공하는 방법입니다.**
+
+배열이 일반적인 예시이며, 제네릭이 없는 배열은 어떤 것이든 포함할 수 있습니다. **제네릭이 있는 배열은 배열 안의 값을 설명할 수 있습니다.**
+
+```ts
+type StringArray = Array<string>;
+type NumberArray = Array<number>;
+type ObjectWithNameArray = Array<{ name: string }>;
+```
+
+제네릭을 사용하는 고유타입을 선언할 수 있습니다.
+
+```ts
+// @errors: 2345
+interface Backpack<Type> {
+    add: (obj: Type) => void;
+    get: () => Type;
+}
+
+// 이 줄은 TS에 backpack이라는 상수가 있음을 알리는 지름길이며
+// const backpack: Backpack<string>이 어디서 왔는지 걱정할 필요가 없습니다.
+declare const backpack: Backpack<string>;
+// ^? : declare는 컴파일러에게 이것(보통 변수)이 이미 존재하므로 다른 코드에서 참조할 수 있으며 이 명령문을 JS로 컴파일 할 필요가 없습니다.라고 알리는데 사용됩니다.(__!!!__)
+
+// 위에서 Backpack의 변수 부분으로 선언해서, object는 string입니다.
+const object = backpack.get();
+
+// backpack 변수가 string이므로, add 함수에 number를 전달할 수 없습니다.
+backpack.add(23);
+```
+
+<br />
+
+### 구조적 타입 시스템(Structural Type System)
+
+TS의 핵심 원칙 중 하나는 타입 검사가 값이 있는 **형태** 에 집중한다는 것입니다. 이는 때때로 "덕 타이핑(duck typing)" 또는 "구조적 타이핑" 이라고 불립니다.
+
+구조적 타입 시스템에서 두 객체가 같은 형태를 가지면 같은 것으로 간주됩니다.
+
+```ts
+interface Point {
+    x: number;
+    y: number;
+}
+
+function printPoint(p: Point) {
+    console.log(`${p.x}, ${p.y}`);
+}
+
+// "12, 26"를 출력합니다.
+const point = { x: 12, y: 26 };
+printPoint(point);
+```
+
+`point`변수는 `Point` 타입으로 선언된 적이 없지만, TS는 타입검사에서 `point`의 형태와 `Point`의 형태를 비교합니다. 둘 다 같은 형태이기 때문에, 통과합니다.
+
+형태 일치에서는 일치시킬 객체의 필드의 하위 집합만 필요합니다.
+
+```ts
+// @errors: 2345
+interface Point {
+    x: number;
+    y: number;
+}
+
+function printPoint(p: Point) {
+    console.log(`${p.x}, ${p.y}`);
+}
+
+// ---cut---
+const point3 = { x: 12, y: 26, z: 89 };
+printPoint(point3); //prints "12, 26"
+
+const rect = { x: 33, y: 3, width: 30, height: 80 };
+printPoint(rect); //prints "33, 3"
+
+const color = { hex: '#187ABF' };
+
+printPoint(color);
+```
+
+마지막으로, 정확하게 마무리 짓기 위해, 구조적으로 클래스와 객체가 형태를 따르는 방법에는 차이가 없습니다.
+
+```ts
+// @errors: 2345
+interface Point {
+    x: number;
+    y: number;
+}
+
+function printPoint(p: Point) {
+    console.log(`${p.x}, ${p.y}`);
+}
+
+//---cut---
+class VirtualPoint {
+    x: number;
+    y: number;
+
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+}
+
+const newVPoint = new VirtualPoint(13, 56);
+printPoint(newVPoint); // prints "13, 56"
+```
+
+객체 또는 클래스에 필요한 모든 속성이 존재한다면, TS는 구현 세부 정보에 관계없이 일치하게 봅니다.
 
 <br />
 <br />
