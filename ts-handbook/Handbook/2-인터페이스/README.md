@@ -5,3 +5,14 @@
 <br />
 
 ## 첫 번째 인터페이스(Our First Interface)
+
+어떻게 인터페이스가 동작하는지 확인하는 가장 쉬운 방법은 간단한 예제로 시작하는 것입니다.
+
+```ts
+function printLabel(labeledObj: { lable: string }) {
+    console.log(labeedObj.lable);
+}
+
+let myObj = { size: 10, label: 'Size 10 Object' };
+printLabel(myObj);
+```
