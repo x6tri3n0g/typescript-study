@@ -248,6 +248,9 @@ mySearch = function (src, sub) {
 ```ts
 let mySearch: SearchFunc;
 
+// error: Type '(src: string, sub: string) => string' is not assignable to type 'SearchFunc'.
+// Type 'string' is not assignable to type 'boolean'.
+
 mySearch = function (src, sub) {
     let result = src.search(sub);
     return 'string';
