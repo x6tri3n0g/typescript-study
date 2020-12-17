@@ -256,3 +256,22 @@ mySearch = function (src, sub) {
     return 'string';
 };
 ```
+
+<br />
+
+## 인덱서블 타입(Indexable Types)
+
+인터페이스로 함수 타입을 설명하는 방법과 유사하게, `a[10]` 이나 `ageMap["daniel"]` 처럼 타입을 "인덱스"로 기술할 수 있습니다. 인덱서블 타입은 인덱싱 할때 반환 유형과 함께 인덱싱하는데 사용할 수 있는 타입을 기술하는 **인덱스 시그니처(index signature)** 를 가지고 있습니다.
+
+```ts
+interface StringArray {
+    [index: number]: string;
+}
+
+let myArray: StringArray;
+myArray = ['Bob', 'Fred'];
+
+let myStr: string = myArray[0];
+```
+
+위에서
