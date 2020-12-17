@@ -328,3 +328,45 @@ myArray[2] = 'Mallory'; // 오류
 ```
 
 인덱스 시그니처가 읽기 전용이기 때문에 `myArray[2]`의 값을 할당할 수 없습니다.
+
+<br />
+
+## 클래스 타입(Class Types) 
+
+### 인터페이스 구현하기(Implementing an interface)
+
+클래스가 특정 계약(contract)을 충족시키도록 명시적으로 강제하는 C#과 Java와 같은 언어에서 인터페이스를 사용하는 가장 일반적인 방법은 TS에서도 가능합니다.
+
+```ts
+interface ClockInterface {
+    currentTime: Date;
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date = new Date();
+    constructor(h: number, m: number) { ... }
+}
+```
+
+아래 예제의 `setTime` 처럼 클래스에 구현된 메서드를 인터페이스 안에서도 기술할 수 있습니다.
+
+```ts
+interface ClockInterface {
+    currentTime: Date;
+    setTime(d: Date): void;
+}
+
+class Clock implements ClockInterface {
+    currentTime: Date = new Date();
+    setTime: Date(d: Date) {
+        this.currentTime = d;
+    }
+    constructor(h: number, m: number) { ... }
+}
+```
+
+인테페이스는 클래스의 public과 private 모두 보다는, public을 기술합니다. 그래서 클래스 인스턴스의 private에서는 특정 타입이 있는지 검사할 수 없습니다.
+
+### 클래스의 스태틱과 인스턴스의 차이점(Difference between the static and instance sides of classes)
+
+클래스와 인터페이스를 다룰 때, 클래스는 __두 가지 타입__ 을 가진다는 것을 기억하는게 좋습니다. 
