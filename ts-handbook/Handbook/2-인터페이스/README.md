@@ -274,4 +274,24 @@ myArray = ['Bob', 'Fred'];
 let myStr: string = myArray[0];
 ```
 
-위에서
+위에서 인덱스 서명이 있는 `StringArray` 인터페이스가 있습니다. 이 인덱스 서명은 `StringArray`가 `number`로 색인화(indexed)되면 `string`을 반환할 것을 나타냅니다.
+
+인덱스 서명을 지원하는 타입에는 두 가지가 있습니다. => 문자열, 숫자
+
+두 타입의 인덱서(indexer)를 모두 지원하는 것은 가능하지만, 숫자 인덱서에서 반환된 타입은 반드시 문자열 인덱서에서 반환된 타입의 하위 타입(subtype)이어야 합니다. 이 이유는 `number`로 인덱싱할 때, JS는 실제로 객체를 인덱싱하기 전에 `string`으로 변환하기 때문입니다. 즉, `100(number)`로 인덱싱하는 것은 `"100"(string)`로 인덱싱하는 것과 같기 때문에, 서로 일관성 있어야 합니다.
+
+```ts
+class Animal {
+    name: string;
+}
+
+class Dog extends Animal {
+    breed: string;
+}
+
+// Error: 숫자형 문자열로 인덱싱을 하면 완전히 다른 타입의 Animal을 얻게 될 것입니다!
+interface NotOkay {
+    [x: number]: Animal;
+    [x: string]: Dog;
+}
+```
