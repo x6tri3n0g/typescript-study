@@ -369,4 +369,15 @@ class Clock implements ClockInterface {
 
 ### 클래스의 스태틱과 인스턴스의 차이점(Difference between the static and instance sides of classes)
 
-클래스와 인터페이스를 다룰 때, 클래스는 __두 가지 타입__ 을 가진다는 것을 기억하는게 좋습니다. 
+클래스와 인터페이스를 다룰 때, 클래스는 __두 가지 타입__ 을 가진다는 것을 기억하는게 좋습니다. 생성 시그니처(Construct signature)로 인터페이스를 생성하고, 클래스를 생성하려고 한다면, 인터페이스를 implements할 때, 에러가 발생하는 것을 확인할 수 있을 겁니다.
+
+```ts
+interface ClockConstructor {
+    new (hour: number, minute: number);
+}
+
+class Clock implements ClockConstructor {
+    currentTime: Date;
+    constructor(h: number, m: number) { ... }
+}
+```
