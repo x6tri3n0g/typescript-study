@@ -331,7 +331,7 @@ myArray[2] = 'Mallory'; // 오류
 
 <br />
 
-## 클래스 타입(Class Types) 
+## 클래스 타입(Class Types)
 
 ### 인터페이스 구현하기(Implementing an interface)
 
@@ -369,7 +369,7 @@ class Clock implements ClockInterface {
 
 ### 클래스의 스태틱과 인스턴스의 차이점(Difference between the static and instance sides of classes)
 
-클래스와 인터페이스를 다룰 때, 클래스는 __두 가지 타입__ 을 가진다는 것을 기억하는게 좋습니다. 생성 시그니처(Construct signature)로 인터페이스를 생성하고, 클래스를 생성하려고 한다면, 인터페이스를 implements할 때, 에러가 발생하는 것을 확인할 수 있을 겁니다.
+클래스와 인터페이스를 다룰 때, 클래스는 **두 가지 타입** 을 가진다는 것을 기억하는게 좋습니다. 생성 시그니처(Construct signature)로 인터페이스를 생성하고, 클래스를 생성하려고 한다면, 인터페이스를 implements할 때, 에러가 발생하는 것을 확인할 수 있을 겁니다.
 
 ```ts
 interface ClockConstructor {
@@ -380,4 +380,49 @@ class Clock implements ClockConstructor {
     currentTime: Date;
     constructor(h: number, m: number) { ... }
 }
+```
+
+클래스가 인터페이스를 implements 할 때, 클래스의 인스턴스만 검사하기 때문입니다. 생성자가 스태틱이기 때문에, 이 검사에 포함되지 않습니다.
+
+대신에, 클래스의 스태틱 부분을 직접적으로 다룰 필요가 있습니다. 이번 예제에서, `ClockConstructor`는 생성자를 정의하고, `ClockInterface`는 인스턴스 메서드를 정의하는 두 인터페이스를 정의합니다. 그리고, 편의를 위해, 전달된 타입의 인스턴스를 생성하는 `createClock` 생성자 함수를 정의합니다.
+
+```ts
+interface ClockConstructor {
+    new (hour: number, minute: number): ClockInterface;
+}
+
+interface ClockInterface {
+    tick(): void;
+}
+
+function createClock(
+    ctor: ClockConstructor,
+    hour: number,
+    minute: number
+): ClockInterface {
+    return new ctor(hour, minute);
+}
+
+class DigitalClock implements ClockInterface {
+    constructor(h: number, m: number) {
+        // ...
+    }
+
+    tic() {
+        console.log('beep beep');
+    }
+}
+
+class AnalogClock implements ClockInterface {
+    constructor(h: number, m: number) {
+        // ...
+    }
+
+    tick() {
+        console.log('tick tock');
+    }
+}
+
+let digital = createClock(DigitalClock, 12, 17);
+let analog = createClock(AnalogClock, 7, 32);
 ```
