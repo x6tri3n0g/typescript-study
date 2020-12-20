@@ -526,5 +526,33 @@ c.interval = 5.0;
 이는 거대한 상속계층을 가지고 있을 때 유용하지만, 특정 프로퍼티를 가진 하위클래스에서만 코드가 동작하도록 지정하는데도 유용합니다. 하위 클래스는 기초 클래스에서 상속하는 것 외에는 관련이 있을 필요가 없습니다.
 
 ```ts
+class Control {
+    private state: any;
+}
 
+interface SelectableControl extends Control {
+    select(): void;
+}
+
+class Button extends Control implements SelectableControl {
+    select() { }
+}
+
+class TextBox extends Control {
+    select() { }
+}
+
+// Error: Property 'state' is missing in type 'Image'.
+class Image implements SelectableControl {
+    private state: any;
+    select() { }
+}
+
+class Location {
+    // ...
+}
 ```
+
+위 예제에서, `SelectableControl`은 private `state` 프로퍼티를 포함하여, `Control`의 모든 멤버를 가지고 있습니다. `state`는 private 멤버이기 때문에, `SelectableControl`를 구현하는 것은 `Control`의 자식에게만 가능합니다. `Control`의 자식만 같은 선언에서 유래된 `state` private 멤버를 가질 수 있기 때문이고, private 멤버들이 호환되기 위해 필요합니다.
+
+`Control` 클래스 안에서 `SelectableControl`의 인스턴스를 통해서 `state` private 멤버에 접근할 수 있습니다. `SelectableControl`은 `select` 메서드를 가진 `Control`과 같은 역할을 합니다. `Button`과 `TextBox` 클래스들은 `SelectableControl`의 하위타입이지만 (`Control`을 상속받고, `select` 메서드를 가지기 때문에), `Image`와 `Location` 클래스는 아닙니다.
