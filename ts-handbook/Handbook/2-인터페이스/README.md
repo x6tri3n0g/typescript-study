@@ -426,3 +426,105 @@ class AnalogClock implements ClockInterface {
 let digital = createClock(DigitalClock, 12, 17);
 let analog = createClock(AnalogClock, 7, 32);
 ```
+
+`createClock`의 첫 번째 매개변수는 `createClock(AnalogClock, 7, 32)` 안에 `ClockConstructor` 타입이므로, `AnalogClock`이 올바른 생성자 시그니처를 갖고 있는지 검사합니다.
+
+또 다른 쉬운 방법은 클래스 표현을 사용하는 것입니다.
+
+```ts
+interface ClockConstructor {
+    new (hour: number, minute: number);
+}
+
+interface ClockInterface {
+    tick();
+}
+
+const Clock: ClockConstructor = class Clock implements ClockInterface {
+    constructor(h: number, m: number) {}
+    tick() {
+        console.log('beep beep');
+    }
+};
+```
+
+<br />
+
+## 인터페이스 확장하기(Extending Interfaces)
+
+클래스처럼, 인터페이스들도 확장(extend)이 가능합니다. 이는 한 인터페이스의 멤버를 다른 인터페이스에 복사하는 것을 가능하게 해주는데, 인터페이스를 재사용성 높은 컴포넌트로 쪼갤 때, 유연함을 제공해줍니다.
+
+```ts
+interface Shape {
+    color: string;
+}
+
+interface Square extends Shape {
+    sideLength: number;
+}
+
+let square = {} as Square;
+square.color = 'blue';
+square.sideLength = 10;
+```
+
+인터페이스는 여러 인터페이스를 확장할 수 있어, 모든 인터페이스의 조합을 만들어낼 수 있습니다.
+
+```ts
+interface Shape {
+    color: string;
+}
+
+interface PenStroke {
+    penWidth: number;
+}
+
+interface Square extends Shape, PenStroke {
+    sideLength: number;
+}
+
+let square = {} as Square;
+square.color = 'blue';
+square.sideLength = 10;
+square.penWidth = 5.0;
+```
+
+<br />
+
+## 하이브리드 타입(Hybrid Types)
+
+일찍이 언급했듯이, 인터페이스는 실제 JS 세계에 존재하는 다양한 타입등을 기술할 수 있습니다. JS의 동적이고 유연한 특성 때문에, 위에 설명했던 몇몇 타입의 조합으로 동작하는 객체를 가끔 마주할 수 있습니다.
+
+그러한 예제 중 하나는 추가적인 프로퍼티와 함께, 함수와 객체 역할 모두 수행하는 객체입니다.
+
+```ts
+interface Counter {
+    (start: number): string;
+    interval: number;
+    reset(): void;
+}
+
+function getCounter(): Counter {
+    let counter = function (start: number) {} as Counter;
+    counter.interval = 123;
+    counter.reset = function () {};
+    return counter;
+}
+
+let c = getCounter();
+c(10);
+c.reset();
+c.interval = 5.0;
+```
+
+<br />
+
+## 클래스를 확장한 인터페이스(Interfaces Extending Classes)
+
+인터페이스 타입이 클래스 타입을 확장하면, 클래스의 멤버는 상속받지만 구현은 상속받지 않습니다. 이것은 인터페이스가 구현을 제공하지 않고, 클래스의 멤버 모두를 선언한 것과 마찬가지입니다. 인터페이스는 심지어 기초 클래스의 private과 protected 멤버도 상속받습니다. 이것은 인터페이스가 private 혹은 protected 멤버를 포함한 클래스를 확장할 수 있다는 뜻이고, 인터페이스 타입은 그 클래스나 하위 클래스에 의해서만 구현될 수 있습니다.
+
+이는 거대한 상속계층을 가지고 있을 때 유용하지만, 특정 프로퍼티를 가진 하위클래스에서만 코드가 동작하도록 지정하는데도 유용합니다. 하위 클래스는 기초 클래스에서 상속하는 것 외에는 관련이 있을 필요가 없습니다.
+
+```ts
+
+```
