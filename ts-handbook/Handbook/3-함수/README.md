@@ -197,6 +197,33 @@ function buildName(firstName: string, ...restOfName: string[]) {
 let buildNameFun: (fname: string, ...rest: string[]) => string = buildName;
 ```
 
-#### this
+### this
 
-`this`
+`this`가 JS에서 어떻게 쓰이는 아는 것은 일종의 통과의례입니다. TS는 몇 가지 기술들로 잘못된 `this` 사용을 잡아낼 수 있습니다. 만약 JS에서 this가 어떻게 동작하는지 알고 싶다면 [JavaScript 함수 호출과 "this" 이해하기](https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/)을 읽도록 합니다. 
+
+### `this`와 화살표 함수(this and arrow functions)
+
+JS에서, `this`는 함수가 호출될 때 정해지는 변수입니다. 매우 강력하고 유연한 기능이지만 이것은 항상 함수가 실행되는 콘텍스트에 대해 알아야 한다는 수고 생깁니다. 특히 함수를 반환하거나 인자로 넘길 때의 혼란스러움은 악명 높습니다.
+
+예시를 봅시다.
+
+```ts
+let deck = {
+    suits: ["hearts", "spades", "clubs", "diamonds"],
+    cards: Array(52),
+    createCardPicker: function() {
+        return function() {
+            let pickedCard = Math.floor(Math.random() * 52);
+            let pickedSuit = Math.floor(pickedCard / 13);
+
+            return {suit: this.suits[pickedSuit], card: pickedCard % 13};
+        }
+    }
+}
+
+let cardPicker = deck.createCardPicker();
+let pickedCard = cardPicker();
+
+alert("card: " + pickedCard.card + " of " + pickedCard.suit);
+```
+
