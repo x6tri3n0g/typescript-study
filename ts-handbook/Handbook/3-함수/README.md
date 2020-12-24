@@ -191,7 +191,7 @@ let employeeName = buildName('Joseph', 'Samuel', 'Lucas', 'Mackinzie');
 
 ```ts
 function buildName(firstName: string, ...restOfName: string[]) {
-    return firstName + " " + restOfName.join(" ");
+    return firstName + ' ' + restOfName.join(' ');
 }
 
 let buildNameFun: (fname: string, ...rest: string[]) => string = buildName;
@@ -199,7 +199,7 @@ let buildNameFun: (fname: string, ...rest: string[]) => string = buildName;
 
 ### this
 
-`this`가 JS에서 어떻게 쓰이는 아는 것은 일종의 통과의례입니다. TS는 몇 가지 기술들로 잘못된 `this` 사용을 잡아낼 수 있습니다. 만약 JS에서 this가 어떻게 동작하는지 알고 싶다면 [JavaScript 함수 호출과 "this" 이해하기](https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/)을 읽도록 합니다. 
+`this`가 JS에서 어떻게 쓰이는 아는 것은 일종의 통과의례입니다. TS는 몇 가지 기술들로 잘못된 `this` 사용을 잡아낼 수 있습니다. 만약 JS에서 this가 어떻게 동작하는지 알고 싶다면 [JavaScript 함수 호출과 "this" 이해하기](https://yehudakatz.com/2011/08/11/understanding-javascript-function-invocation-and-this/)을 읽도록 합니다.
 
 ### `this`와 화살표 함수(this and arrow functions)
 
@@ -209,21 +209,22 @@ JS에서, `this`는 함수가 호출될 때 정해지는 변수입니다. 매우
 
 ```ts
 let deck = {
-    suits: ["hearts", "spades", "clubs", "diamonds"],
+    suits: ['hearts', 'spades', 'clubs', 'diamonds'],
     cards: Array(52),
-    createCardPicker: function() {
-        return function() {
+    createCardPicker: function () {
+        return function () {
             let pickedCard = Math.floor(Math.random() * 52);
             let pickedSuit = Math.floor(pickedCard / 13);
 
-            return {suit: this.suits[pickedSuit], card: pickedCard % 13};
-        }
-    }
-}
+            return { suit: this.suits[pickedSuit], card: pickedCard % 13 };
+        };
+    },
+};
 
 let cardPicker = deck.createCardPicker();
 let pickedCard = cardPicker();
 
-alert("card: " + pickedCard.card + " of " + pickedCard.suit);
+alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
 ```
 
+`createCardPicker`가 자기 자신을 반환하는 함수입니다. 이 예제는 에러를 일으킵니다. `createCardPicker`에 의해 생성된 함수에서 사용 중인 `this`가 `deck` 객체가 아닌 `window`에 설정되었기 때문입니다.
