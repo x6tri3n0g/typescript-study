@@ -227,4 +227,4 @@ let pickedCard = cardPicker();
 alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
 ```
 
-`createCardPicker`가 자기 자신을 반환하는 함수입니다. 이 예제는 에러를 일으킵니다. `createCardPicker`에 의해 생성된 함수에서 사용 중인 `this`가 `deck` 객체가 아닌 `window`에 설정되었기 때문입니다.
+`createCardPicker`가 자기 자신을 반환하는 함수입니다. 이 예제는 에러를 일으킵니다. `createCardPicker`에 의해 생성된 함수에서 사용 중인 `this`가 `deck` 객체가 아닌 `window`에 설정되었기 때문입니다. 최상위 레벨에서의 비-메서드 문법의 호출은 `this`를 `window`로 합니다.(strict mode에서는 `this`가 `window` 대신 `undefined`가 됩니다.)
