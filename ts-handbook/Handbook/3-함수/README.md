@@ -233,22 +233,23 @@ alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
 
 ```ts
 let deck = {
-    suits: ["hearts", "spades", "clubs", "diamonds"],
+    suits: ['hearts', 'spades', 'clubs', 'diamonds'],
     cards: Array(52),
-    createCardPicker: function() {
+    createCardPicker: function () {
         // NOTE: 아랫줄은 화살표 함수로써, 'this'를 이곳에서 캡처할 수 있도록 합니다
         return () => {
             let pickedCard = Math.floor(Math.random() * 52);
             let pickedSuit = Math.floor(pickedCard / 13);
 
-            return {suit: this.suits[pickedSuit], card: pickedCard % 13};
-        }
-    }
-}
+            return { suit: this.suits[pickedSuit], card: pickedCard % 13 };
+        };
+    },
+};
 
 let cardPicker = deck.createCardPicker();
 let pickedCard = cardPicker();
 
-alert("card: " + pickedCard.card + " of " + pickedCard.suit);
+alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
 ```
 
+`--noImplicitThis` 플래그를 컴파일러에 전달하는 실수를 하게 된다면 TypeScript는 경고를 표시할 것입니다. `this.suits[pickedSuit]` 의 this는 any 타입인 것을 짚고 넘어가겠습니다.
