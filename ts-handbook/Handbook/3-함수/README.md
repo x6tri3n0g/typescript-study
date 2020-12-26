@@ -230,3 +230,25 @@ alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
 `createCardPicker`가 자기 자신을 반환하는 함수입니다. 이 예제는 에러를 일으킵니다. `createCardPicker`에 의해 생성된 함수에서 사용 중인 `this`가 `deck` 객체가 아닌 `window`에 설정되었기 때문입니다. 최상위 레벨에서의 비-메서드 문법의 호출은 `this`를 `window`로 합니다.(strict mode에서는 `this`가 `window` 대신 `undefined`가 됩니다.)
 
 이 문제는 나중에 사용할 함수를 반환하기 전에 바인딩을 알맞게 하는 것으로 해결할 수 있습니다. 이 방법대로라면 나중에 사용하는 방법에 상관없이 원본 `deck` 객체를 계속해서 볼 수 있습니다. 이를 위해, 함수 표현식을 ES6의 화살표 함수로 바꿀 것입니다. 화살표 함수는 함수가 호출된 곳이 아닌 함수가 생성된 쪽의 `this`를 캡처합니다.
+
+```ts
+let deck = {
+    suits: ["hearts", "spades", "clubs", "diamonds"],
+    cards: Array(52),
+    createCardPicker: function() {
+        // NOTE: 아랫줄은 화살표 함수로써, 'this'를 이곳에서 캡처할 수 있도록 합니다
+        return () => {
+            let pickedCard = Math.floor(Math.random() * 52);
+            let pickedSuit = Math.floor(pickedCard / 13);
+
+            return {suit: this.suits[pickedSuit], card: pickedCard % 13};
+        }
+    }
+}
+
+let cardPicker = deck.createCardPicker();
+let pickedCard = cardPicker();
+
+alert("card: " + pickedCard.card + " of " + pickedCard.suit);
+```
+
