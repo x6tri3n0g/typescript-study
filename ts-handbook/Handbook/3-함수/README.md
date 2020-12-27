@@ -253,3 +253,28 @@ alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
 ```
 
 `--noImplicitThis` 플래그를 컴파일러에 전달하는 실수를 하게 된다면 TypeScript는 경고를 표시할 것입니다. `this.suits[pickedSuit]` 의 this는 any 타입인 것을 짚고 넘어가겠습니다.
+
+### `this` 매개변수(this parameter)
+
+불행히도 `this.suits[pickedSuit]`의 타입은 여전히 `any`입니다. `this`가 객체 리터럴 내부의 함수에서 왔기 때문입니다. 이것을 고치긱 위해 명시적으로 `this` 매개변수를 줄 수 있습니다. `this` 매개변수 목록에서 가장 먼저 나오는 가짜 매개변수입니다.
+
+```ts
+function f(this: void) {
+    // 독립형 함수에서 'this'를 사용할 수 없는 것을 확인함
+}
+```
+
+명확하고 재사용하기 쉽게 `Card`와 `Deck` 두 가지 인터페이스 타입들을 예시에 추가해보겠습니다.
+
+```ts
+interface Card {
+    suit: string;
+    card: number;
+}
+
+interface Deck {
+    suits: string[];
+    cards: number[];
+    createCardPicker(this: Deck): () => Card;
+}
+```
