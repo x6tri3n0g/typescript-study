@@ -300,3 +300,4 @@ alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
 
 이제 TypeScript는 `createCardPicker`가 `Deck` 객체에서 호출된다는 것을 알게 됐습니다. 이것은 `this`가 `any` 타입이 아니라 `Deck` 타입이며 따라서 `--noImplicitThis` 플래그가 어떤 오류도 일으키지 않는다는 것을 의미합니다.
 
+### 콜백에서 `this` 매개변수(`this` parameters in callbacks)
