@@ -303,3 +303,9 @@ alert('card: ' + pickedCard.card + ' of ' + pickedCard.suit);
 ### 콜백에서 `this` 매개변수(`this` parameters in callbacks)
 
 나중에 호출할 콜백 함수를 라이브러리에 전달할 때 this 때문에 오류가 발생할 수 있습니다. 라이브러리는 콜백을 일반 함수처럼 호출하므로 this는 undefined가 됩니다. 일부 작업에서는 this 매개변수를 콜백 오류를 막는데 사용할 수 있습니다. 먼저 라이브러리 작성자는 콜백 타입을 this로 표시를 해주어야 합니다.
+
+```ts
+interface UIElement {
+    addClickListener(onclick: (this: void, e: Event) => void): void;
+}
+```
