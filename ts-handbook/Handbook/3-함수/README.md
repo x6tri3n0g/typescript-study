@@ -311,3 +311,15 @@ interface UIElement {
 ```
 
 this: void는 addClickListener가 onclick이 this타입을 요구하지 않는 함수가 될 것으로 예상하는 것을 의미합니다. 두 번째로, 호출 코드를 this로 표시합니다.
+
+```ts
+class Handler {
+    info: string;
+    onClickBad(this: Handler, e: Event) {
+        // 이런, `this`가 여기서 쓰이는군요. 이 콜백을 쓰면 런타임에서 충돌을 일으키겠군요
+        this.info = e.message;
+    }
+}
+let h = new Handler();
+uiElement.addClickListener(h.onClickBad); // 오류!
+```
