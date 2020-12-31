@@ -309,3 +309,5 @@ interface UIElement {
     addClickListener(onclick: (this: void, e: Event) => void): void;
 }
 ```
+
+this: void는 addClickListener가 onclick이 this타입을 요구하지 않는 함수가 될 것으로 예상하는 것을 의미합니다. 두 번째로, 호출 코드를 this로 표시합니다.
