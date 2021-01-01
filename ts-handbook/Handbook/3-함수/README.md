@@ -321,5 +321,5 @@ class Handler {
     }
 }
 let h = new Handler();
-uiElement.addClickListener(h.onClickBad); // 오류!
+uiElement.addClickListener(h.onClickBad);   // 오류!
 ```
