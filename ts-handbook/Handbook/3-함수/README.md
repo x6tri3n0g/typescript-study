@@ -310,7 +310,7 @@ interface UIElement {
 }
 ```
 
-this: void는 addClickListener가 onclick이 this타입을 요구하지 않는 함수가 될 것으로 예상하는 것을 의미합니다. 두 번째로, 호출 코드를 this로 표시합니다.
+`this: void`는 addClickListener가 onclick이 this타입을 요구하지 않는 함수가 될 것으로 예상하는 것을 의미합니다. 두 번째로, 호출 코드를 this로 표시합니다.
 
 ```ts
 class Handler {
