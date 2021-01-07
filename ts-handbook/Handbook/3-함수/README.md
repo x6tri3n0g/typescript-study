@@ -330,7 +330,7 @@ this로 표시를 한 상태에서 onClickBad가 반드시 Handler의 인스턴�
 class Handler {
     info: string;
     onClickGood(this: void, e: Event) {
-        // void 타입이기 때문에 this는 이곳에서 쓸 수 없습니다!
+        // void 타입이기 때문에 this는 이곳에서 쓸 수 없습니다.
         console.log('clicked!');
     }
 }
