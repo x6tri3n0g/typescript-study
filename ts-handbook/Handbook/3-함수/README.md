@@ -324,7 +324,7 @@ let h = new Handler();
 uiElement.addClickListener(h.onClickBad); // 오류!!
 ```
 
-`this`로 표시를 한 상태에서 onClickBad가 반드시 Handler의 인스턴스로써 호출되어야 함을 명시해 주어야 합니다. 그러면 TypeScript는 addClickListener가 this: void를 갖는 함수를 필요로 한다는 것을 감지합니다. 오류를 고치기 위해 this의 타입을 바꿔줍니다:
+`this`로 표시를 한 상태에서 `onClickBad`가 반드시 Handler의 인스턴스로써 호출되어야 함을 명시해 주어야 합니다. 그러면 TypeScript는 addClickListener가 this: void를 갖는 함수를 필요로 한다는 것을 감지합니다. 오류를 고치기 위해 this의 타입을 바꿔줍니다:
 
 ```ts
 class Handler {
