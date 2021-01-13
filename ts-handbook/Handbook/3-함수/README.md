@@ -316,7 +316,7 @@ interface UIElement {
 class Handler {
     info: string;
     onClickBad(this: Handler, e: Event) {
-        // `this`가 여기서 쓰이는군요. 이 콜백을 쓰면 런타임에서 충돌을 일으킵니다.
+        // `this`가 여기서 쓰입니다. 이 콜백을 쓰면 런타임에서 충돌을 일으킵니다.
         this.info = e.message;
     }
 }
