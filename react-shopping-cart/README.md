@@ -28,3 +28,8 @@ $ npm i styled-components @types/styled-components
 (3) Remove files you don't need
 
 Remove all except `App.tsx`, `index.tsx`, `react-app-env.d.ts` under `./src`
+
+<br />
+<br />
+
+### I wrote git `commit` according to the flow of the lecture. For more information, check the `history`.
