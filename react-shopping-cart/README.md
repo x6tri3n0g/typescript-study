@@ -26,4 +26,5 @@ $ npm i styled-components @types/styled-components
 ```
 
 (3) Remove files you don't need
+
 Remove all except `App.tsx`, `index.tsx`, `react-app-env.d.ts` under `./src`
