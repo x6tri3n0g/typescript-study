@@ -32,4 +32,6 @@ Remove all except `App.tsx`, `index.tsx`, `react-app-env.d.ts` under `./src`
 <br />
 <br />
 
-## 🧐 I wrote git `commit` according to the flow of the lecture. For more information, check the `history`.
+## 📗 Lecture Note
+
+I wrote git `commit` according to the flow of the lecture. For more information, check the `history`. 🧐
