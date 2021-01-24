@@ -4,7 +4,7 @@
 
 <br />
 
-### 🤖 We need a little setup!
+## 🤖 We need a little setup!
 
 (1) Create Project
 
@@ -32,4 +32,4 @@ Remove all except `App.tsx`, `index.tsx`, `react-app-env.d.ts` under `./src`
 <br />
 <br />
 
-### 🧐 I wrote git `commit` according to the flow of the lecture. For more information, check the `history`.
+## 🧐 I wrote git `commit` according to the flow of the lecture. For more information, check the `history`.
