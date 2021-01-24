@@ -4,7 +4,7 @@
 
 <br />
 
-### We need some setting!
+### We need a little setup!
 
 (1) Create Project
 
