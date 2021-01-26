@@ -337,3 +337,4 @@ class Handler {
 let h = new Handler();
 uiElement.addClickListener(h.onClickGood);
 ```
+this.info를 쓸 수 없는 것을 의미하기도 합니다. 만약 당신이 this.info까지 원한다면 화살표 함수를 사용해야 할 겁니다:
