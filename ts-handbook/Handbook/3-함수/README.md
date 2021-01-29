@@ -350,3 +350,65 @@ class Handler {
 ```
 
 이러한 작업은 화살표 함수가 외부의 this를 사용하기 때문에 가능하므로 this: void일 것으로 기대하는 무언가라면 전달에 문제가 없습니다. Handler 타입 객체마다 하나의 화살표 함수가 작성된다는 점이 단점입니다. 반면, 메서드들은 하나만 작성되어 Handler의 프로토타입에 붙습니다. 그들은 Handler 타입의 모든 객체 간에 공유됩니다.
+
+<br />
+<br />
+
+## 오버로드(Overloads)
+
+JS는 본질적으로 매우 동적인 언어입니다. 하나의 JS 함수가 전달된 인자의 형태에 따라 다른 타입의 객체들을 반환하는 것은 흔한 일입니다.
+
+```ts
+let suits = ["hearts", "spades", "clubs", "diamonds"];
+
+function pickCard(x): any {
+    if (typeof x == "object") {
+        let pickedCard = Math.floor(Math.random() * x.length);
+        return pickedCard;
+    } else if (typeof x == "number") {
+        let pickedSuit = Math.floor(x / 13);
+        return { suit: suits[pickedSuit], card: x % 13 };
+    }
+}
+
+let myDeck = [{ suit: "diamonds", card: 2 }, { suit: "spades", card: 10 }, { suit: "hearts", card: 4 }];
+let pickedCard1 = myDeck[pickCard(myDeck)];
+alert("card: " + pickedCard1.card + " of " + pickedCard1.suit);
+
+let pickedCard2 = pickCard(15);
+alert("card: " + pickedCard2.card + " of " + pickedCard2.suit);
+```
+
+여기서 사용자가 전달하는 것에 따라 두 가지 다른 결과를 반환하는 함수가 있습니다. 위와 같은 함수를 타입 시스템에서는 어떻게 구현할까요?
+
+정답은 오버로드 목록으로 동일한 함수에 다중 함수 타입을 제공하는 것입니다. 오버로드 목록은 컴파일러가 함수 호출들을 해결할 때 사용하는 것입니다. 오버로드 목록으로 `pickCard`가 동작을 승인하고 반환하는 것을 구현해 봅시다.
+
+```ts
+let suits = ["hearts", "spades", "clubs", "diamonds"];
+
+// Overload listing
+function pickCard(x: {suit: string; card: number; }[]): number;
+function pickCard(x: number): {suit: string; card: number; };
+function pickCard(x): any {
+    if (typeof x == "object") {
+        let pickedCard = Math.floor(Math.random() * x.length);
+        return pickedCard;
+    } else if (typeof x == "number") {
+        let pickedSuit = Math.floor(x / 13);
+        return { suit: suits[pickedSuit], card: x % 13 };
+    }
+}
+
+let myDeck = [{ suit: "diamonds", card: 2 }, { suit: "spades", card: 10 }, { suit: "hearts", card: 4 }];
+let pickedCard1 = myDeck[pickCard(myDeck)];
+alert("card: " + pickedCard1.card + " of " + pickedCard1.suit);
+
+let pickedCard2 = pickCard(15);
+alert("card: " + pickedCard2.card + " of " + pickedCard2.suit);
+```
+
+이 예시 처럼 오버로드를 사용하면 `pickCard` 함수에 대해서 타입 검사를 하고 그에 대한 호출을 합니다.
+
+컴파일러가 알맞은 타입 검사를 하기 위해서, JS와 비슷한 프로세스를 따릅니다. 오버로드 목록에서 첫 번째 오버로드를 진행하면서 제공된 매개변수를 사용하여 함수를 호출하려고 시도합니다. 만약 일치하는 형을 가진 것이 있다면 해당 오버로드를 선택하여 실행합니다. 이러한 이유로 가장 구체적인 것부터 오버로드 리스팅을 하는 것이 일반적입니다.
+
+위 예제에서 `function pickCard(x): any`는 오버로드 목록에 해당되지 않음을 유의하세요. 그래서 두 가지 오버로드(객체 또는 숫자를 받는 것)만을 가집니다. 다른 매개변수 타입(객체 또는 숫자를 제외한 것을 매개변수로 주는 것)으로 `pickCard`를 호출하는 것은 오류가 발생합니다.
