@@ -1,8 +1,8 @@
 import React from 'react';
 
-interface TodoListItemProps {
+type TodoListItemProps = {
     todo: Todo;
-}
+};
 
 export const TodoListItem: React.FC<TodoListItemProps> = ({ todo }) => {
     return (
