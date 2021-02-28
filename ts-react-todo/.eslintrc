@@ -11,7 +11,9 @@
             "tsx": true // Allows for the parsing of JSX
         }
     },
-    "rules": {},
+    "rules": {
+        "react/prop-types": 0
+    },
     "settings": {
         "react": {
             "version": "detect" // Tells eslint-plugin-react to automatically detect the version of React to use
