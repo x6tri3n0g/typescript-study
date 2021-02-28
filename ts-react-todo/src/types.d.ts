@@ -1,4 +1,4 @@
-export type Todo = {
+type Todo = {
     text: string;
     complete: boolean;
 };
