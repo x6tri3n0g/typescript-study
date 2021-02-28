@@ -93,7 +93,7 @@ commit `628150125276c249390c6489d47debd5a233ae0b` 이후 추가 개발
  ┗ README.md
 ```
 
-(2) `추가 기능` 만들기 - ~~로컬에서 데이터 관리하기~~ / 날짜 별 Todo 관리하기 / TodoListItem 삭제  
+(2) `추가 기능` 만들기(Todo의 기본) - ~~로컬에서 데이터 관리하기~~ / TodoListItem 삭제 /  
 (3) `hooks` 적용하기 - Container / Redux 버리기  
 (4) `styled-components` 적용  
 (5) `Test Code` 작성 - `Jest`  
@@ -101,6 +101,6 @@ commit `628150125276c249390c6489d47debd5a233ae0b` 이후 추가 개발
 (7) `Android 앱 출시하기` - RN으로 출시 / PWA 90% 이상으로 통과
 (8) `Firebase`로 유저데이터 관리하기 - (추가) Firebase Analytices  
 (9) `SNS 로그인` 기능  
-(10) `나의 Todo` 공유하기  
+(10) `나의 Todo` 공유하기 / `이미지` 함께 올리기  
 (11) `CI/CD` 구성하기 - 배포 시 슬랙에 알리기  
 (12) `Springboot` 서버 구성하기 >> Repository 새로 구성 후 `AWS`에서 배포
