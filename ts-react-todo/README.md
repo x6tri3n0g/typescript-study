@@ -93,7 +93,7 @@ commit `628150125276c249390c6489d47debd5a233ae0b` 이후 추가 개발
  ┗ README.md
 ```
 
-(2) `추가 기능` 만들기 - 로컬에서 데이터 관리하기 / 날짜 별 Todo 관리하기 / TodoListItem 삭제  
+(2) `추가 기능` 만들기 - ~~로컬에서 데이터 관리하기~~ / 날짜 별 Todo 관리하기 / TodoListItem 삭제  
 (3) `hooks` 적용하기 - Container / Redux 버리기  
 (4) `styled-components` 적용  
 (5) `Test Code` 작성 - `Jest`  
