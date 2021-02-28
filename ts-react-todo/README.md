@@ -14,3 +14,16 @@ type Todo = {
     complete: boolean;
 };
 ```
+
+(2) How to disable `ESLint react/prop-types rule` in a file?
+
+[Solution](https://stackoverflow.com/questions/30948970/how-to-disable-eslint-react-prop-types-rule-in-a-file)
+
+```
+// .eslintrc
+...
+"rules": {
+        "react/prop-types": 0
+},
+...
+```
