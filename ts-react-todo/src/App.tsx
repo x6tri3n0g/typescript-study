@@ -9,7 +9,7 @@ const initialTodos: Array<Todo> = [
 const App: React.FC = () => {
     const [todos, setTodos] = useState(initialTodos);
 
-    const toggleTodo = (selectedTodo: Todo) => {
+    const toggleTodo: ToggleTodo = (selectedTodo) => {
         const newTodos = todos.map((todo) => {
             if (todo === selectedTodo) {
                 return {
