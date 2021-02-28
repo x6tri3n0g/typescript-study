@@ -1,0 +1,26 @@
+{
+    "eslint.autoFixOnSave": true, // has been deprecated, use editor.codeActionsOnSave 								    // instead 라고 써있었지만 주석 처리를 하면 저장 시 										// formatting이 안되어서 주석을 풀었다.
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true
+    },
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        { "language": "typescript", "autoFix": true },
+        { "language": "typescriptreact", "autoFix": true }
+    ],
+
+    "editor.formatOnSave": true,
+    "[javascript]": {
+        "editor.formatOnSave": false
+    },
+    "[javascriptreact]": {
+        "editor.formatOnSave": false
+    },
+    "[typescript]": {
+        "editor.formatOnSave": false
+    },
+    "[typescriptreact]": {
+        "editor.formatOnSave": false
+    }
+}
