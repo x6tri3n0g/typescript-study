@@ -5,6 +5,11 @@
 <br />
 <br />
 
+## Contents
+
+1. [알게된 것](## 알게된 것)
+2. [개선 사항](## 개선 사항)
+
 ## 알게된 것
 
 (1) `types.d.ts`를 사용하면 `export`하지 않아도 전역에서 타입을 사용할 수 있다. 즉, 공통된 type들을 작성하지 않아도 된다.(types decoration file)
@@ -63,13 +68,32 @@ commit `628150125276c249390c6489d47debd5a233ae0b` 이후 추가 개발
 
 ## 개선 사항
 
-(1) `디렉토리 구성` 변경  
+(1) `디렉토리 구성` 변경
+
+```
+📂 TS-REACT-TODO
+ ┣ 📂 src
+ ┃ ┣ 📂 assets
+ ┃ ┃ ┣ 📂 images
+ ┃ ┃ ┗ 📂 styles
+ ┃ ┣ 📂 components
+ ┃ ┣ 📂 constants
+ ┃ ┣ 📂 hooks
+ ┃ ┣ 📂 pages
+ ┃ ┣ 📂 utils
+ ┃ ┣ ...
+ ┃ ┣ App.tsx
+ ┃ ┗ index.tsx
+ ┣ ...
+ ┗ README.md
+```
+
 (2) `추가 기능` 만들기 - 로컬에서 데이터 관리하기 / 날짜 별 Todo 관리하기 / TodoListItem 삭제  
 (3) `hooks` 적용하기 - Container / Redux 버리기  
 (4) `styled-components` 적용  
 (5) `Test Code` 작성 - `Jest`  
 (6) `Storybook` 사용하기  
-(7) `Android 앱 출시하기` - RN  
+(7) `Android 앱 출시하기` - RN으로 출시 / PWA 90% 이상으로 통과
 (8) `Firebase`로 유저데이터 관리하기 - (추가) Firebase Analytices  
 (9) `SNS 로그인` 기능  
 (10) `나의 Todo` 공유하기  
