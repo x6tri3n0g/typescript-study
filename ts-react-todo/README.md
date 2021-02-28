@@ -41,3 +41,11 @@ const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
 ```
 
 type 설정 시 `ChangeEvent<HTMLInputElement>`를 사용한다.
+
+(4) 함수에 Type 정의하기
+
+```ts
+type ToggleTodo = (selectedTodo: Todo) => void;
+
+type AddTodo = (newTodo: string) => void;
+```
