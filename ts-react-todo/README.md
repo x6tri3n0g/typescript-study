@@ -58,3 +58,20 @@ type AddTodo = (newTodo: string) => void;
 <br />
 
 `commit #628150125276c249390c6489d47debd5a233ae0b` 이후 추가 개발
+
+<br />
+
+## 개선 사항
+
+(1) `디렉토리 구성` 변경
+(2) `추가 기능` 만들기 - 로컬에서 데이터 관리하기 / 날짜 별 Todo 관리하기 / TodoListItem 삭제 /
+(3) `hooks` 적용하기 - Container / Redux 버리기
+(4) `styled-components` 적용
+(5) `Test Code` 작성 - `Jest`
+(6) `Storybook` 사용하기
+(7) `Android 앱 출시하기` - RN
+(8) `Firebase`로 유저데이터 관리하기 - (추가) Firebase Analytices
+(9) `SNS 로그인` 기능
+(10) `나의 Todo` 공유하기
+(11) `CI/CD` 구성하기 - 배포 시 슬랙에 알리기
+(12) `Springboot` 서버 구성하기 >> Repository 새로 구성 후 `AWS`에서 배포
