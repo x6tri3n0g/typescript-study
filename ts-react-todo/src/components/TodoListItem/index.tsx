@@ -1,4 +1,5 @@
 import React from 'react';
+import './styles.css';
 
 type TodoListItemProps = {
     todo: Todo;
@@ -7,7 +8,7 @@ type TodoListItemProps = {
 export const TodoListItem: React.FC<TodoListItemProps> = ({ todo }) => {
     return (
         <li>
-            <label>
+            <label className={todo.complete ? 'complete' : undefined}>
                 <input type="checkbox" checked={todo.complete} />
                 {todo.text}
             </label>

@@ -7,7 +7,12 @@ const todos: Array<Todo> = [
 ];
 
 const App: React.FC = () => {
-    return <TodoListItem todo={todos[0]} />;
+    return (
+        <>
+            <TodoListItem todo={todos[0]} />
+            <TodoListItem todo={todos[1]} />
+        </>
+    );
 };
 
 export default App;
