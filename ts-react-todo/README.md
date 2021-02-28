@@ -27,3 +27,17 @@ type Todo = {
 },
 ...
 ```
+
+(3) input에서 사용할 onChange 함수 만들기
+
+```ts
+import React, { ChangeEvent, useState } from 'react';
+
+...
+
+const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setNewTodo(e.target.value);
+};
+```
+
+type 설정 시 `ChangeEvent<HTMLInputElement>`를 사용한다.
