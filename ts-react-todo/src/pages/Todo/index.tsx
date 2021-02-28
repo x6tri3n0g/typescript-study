@@ -39,10 +39,21 @@ const Todo = () => {
         }
         localStorage.setItem('todos', JSON.stringify(todosList));
     };
+
+    const removeTodo: RemoveTodo = (todo) => {
+        const newTodos = todos.filter((data) => data.text !== todo);
+        setTodos(newTodos);
+        localStorage.setItem('todos', JSON.stringify(newTodos));
+    };
+
     return (
         <TodoWrapper>
             <AddTodoForm addTodo={addTodo} />
-            <TodoList todos={todos} toggleTodo={toggleTodo} />
+            <TodoList
+                todos={todos}
+                toggleTodo={toggleTodo}
+                removeTodo={removeTodo}
+            />
         </TodoWrapper>
     );
 };

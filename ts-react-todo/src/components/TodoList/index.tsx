@@ -4,9 +4,14 @@ import { TodoListItem } from '../TodoListItem';
 interface TodoListProps {
     todos: Array<Todo>;
     toggleTodo: ToggleTodo;
+    removeTodo: RemoveTodo;
 }
 
-export const TodoList: React.FC<TodoListProps> = ({ todos, toggleTodo }) => {
+export const TodoList: React.FC<TodoListProps> = ({
+    todos,
+    toggleTodo,
+    removeTodo,
+}) => {
     return (
         <ul>
             {todos.map((todo, index) => {
@@ -15,6 +20,7 @@ export const TodoList: React.FC<TodoListProps> = ({ todos, toggleTodo }) => {
                         key={index}
                         todo={todo}
                         toggleTodo={toggleTodo}
+                        removeTodo={removeTodo}
                     />
                 );
             })}
