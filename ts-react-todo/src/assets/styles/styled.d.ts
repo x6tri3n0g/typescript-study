@@ -23,7 +23,6 @@ declare module 'styled-components' {
         };
         light: {
             mainBackground: string;
-            // neutral color
             title: string;
             primaryText: string;
             secondaryText: string;
@@ -32,8 +31,6 @@ declare module 'styled-components' {
             divider: string;
             background: string;
             tableHeader: string;
-            // point-color
-            // point-color
         };
         // response: {};
     }
