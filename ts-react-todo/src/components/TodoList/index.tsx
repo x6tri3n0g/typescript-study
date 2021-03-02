@@ -14,16 +14,17 @@ export const TodoList: React.FC<TodoListProps> = ({
 }) => {
     return (
         <ul>
-            {todos.map((todo, index) => {
-                return (
-                    <TodoListItem
-                        key={index}
-                        todo={todo}
-                        toggleTodo={toggleTodo}
-                        removeTodo={removeTodo}
-                    />
-                );
-            })}
+            {todos &&
+                todos.map((todo, index) => {
+                    return (
+                        <TodoListItem
+                            key={index}
+                            todo={todo}
+                            toggleTodo={toggleTodo}
+                            removeTodo={removeTodo}
+                        />
+                    );
+                })}
         </ul>
     );
 };

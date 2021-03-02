@@ -5,12 +5,12 @@ import { TodoWrapper } from 'components/Atoms';
 
 const initialTodos: Array<Todo> = [{ text: '', complete: true }];
 
-const Todo = () => {
+const Todo: React.FC = () => {
     const [todos, setTodos] = useState(initialTodos);
 
     useEffect(() => {
         const getStoredTodos = async () => {
-            const _local_Todos = localStorage.getItem('todos') || '';
+            const _local_Todos = localStorage.getItem('todos');
             const parse_todos = await JSON.parse(_local_Todos || '[]');
             setTodos(parse_todos);
         };
@@ -46,9 +46,13 @@ const Todo = () => {
         localStorage.setItem('todos', JSON.stringify(newTodos));
     };
 
+    const resetTodo: ResetTodo = () => {
+        localStorage.setItem('todos', JSON.stringify('[]'));
+    };
+
     return (
         <TodoWrapper>
-            <AddTodoForm addTodo={addTodo} />
+            <AddTodoForm addTodo={addTodo} resetTodo={resetTodo} />
             <TodoList
                 todos={todos}
                 toggleTodo={toggleTodo}
