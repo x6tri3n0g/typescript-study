@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { TodoList } from 'components/TodoList';
-import { AddTodoForm } from 'components/AddTodoForm';
 import { TodoWrapper } from 'components/Atoms';
+import TodoHeader from 'components/TodoHeader';
+import { AddTodoForm } from 'components/AddTodoForm';
+import { TodoList } from 'components/TodoList';
 
 const initialTodos: Array<Todo> = [{ text: '', complete: true }];
 
@@ -53,6 +54,7 @@ const Todo: React.FC = () => {
 
     return (
         <TodoWrapper>
+            <TodoHeader />
             <AddTodoForm addTodo={addTodo} resetTodo={resetTodo} />
             <TodoList
                 todos={todos}
