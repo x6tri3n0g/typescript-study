@@ -47,7 +47,8 @@ const Todo: React.FC = () => {
     };
 
     const resetTodo: ResetTodo = () => {
-        localStorage.setItem('todos', JSON.stringify('[]'));
+        setTodos([]);
+        localStorage.removeItem('todos');
     };
 
     return (
