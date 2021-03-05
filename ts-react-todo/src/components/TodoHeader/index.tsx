@@ -4,7 +4,10 @@ import styled from 'styled-components';
 const HeaderTitle = styled.h1`
     font-size: 24px;
     font-weight: bold;
-    color: ${(props) => props.color.primaryText};
+    /* color: ${(props) => {
+        console.log(props);
+        return props.color;
+    }}; */
 `;
 
 const TodoHeader: React.FC = () => {

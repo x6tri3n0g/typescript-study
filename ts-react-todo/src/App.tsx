@@ -1,19 +1,30 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { GlobalStyle } from 'assets/styles/global-styles';
 import { defaultTheme, darkTheme } from 'assets/styles/theme';
 import Todo from 'pages/Todo';
-import { GlobalStyle } from 'assets/styles/global-styles';
+
+const themes = {
+    default: defaultTheme,
+    dark: darkTheme,
+};
+
+type Theme = keyof typeof themes;
+
+const keysOfThemes = Object.keys(themes) as Theme[];
 
 const App: React.FC = () => {
-    const [colorMode, setColorMode] = useState('light');
-
-    const mode = useCallback(() => {
-        return colorMode === 'light' ? defaultTheme : darkTheme;
-    }, [colorMode]);
+    const [theme, setTheme] = useState<Theme>('default');
 
     return (
-        <ThemeProvider theme={mode()}>
+        <ThemeProvider theme={themes[theme]}>
             <GlobalStyle />
+            <span>Hello world!</span>
+            {keysOfThemes.map((theme) => (
+                <button key={theme} onClick={() => setTheme(theme)}>
+                    {theme}
+                </button>
+            ))}
             <Todo />
         </ThemeProvider>
     );

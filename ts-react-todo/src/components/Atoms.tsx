@@ -8,5 +8,5 @@ export const TodoWrapper = styled.div`
     align-items: center;
     width: 100vw;
     height: 100vh;
-    background-color: ${(props) => props.color.mainBackground};
+    background-color: var(--color-primary);
 `;
