@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ThemeProvider } from 'styled-components';
+import styled, { ThemeProvider } from 'styled-components';
 import { GlobalStyle } from 'assets/styles/global-styles';
 import { defaultTheme, darkTheme } from 'assets/styles/theme';
 import Todo from 'pages/Todo';
@@ -13,13 +13,17 @@ type Theme = keyof typeof themes;
 
 const keysOfThemes = Object.keys(themes) as Theme[];
 
+const Text = styled.div`
+    color: var(--color-primary-text);
+`;
+
 const App: React.FC = () => {
     const [theme, setTheme] = useState<Theme>('default');
 
     return (
         <ThemeProvider theme={themes[theme]}>
             <GlobalStyle />
-            <span>Hello world!</span>
+            <Text>Hello world!</Text>
             {keysOfThemes.map((theme) => (
                 <button key={theme} onClick={() => setTheme(theme)}>
                     {theme}
