@@ -15,9 +15,9 @@ export const GlobalStyle = createGlobalStyle`
         --color-main-background: ${(props) => props.theme.color.mainBackground};
         --color-background: ${(props) => props.theme.color.background};
 
-        --font-size-default: ;
+        /* --font-size-default: ;
         --font-size-title: ;
-        --font-size-subtitle: ;
+        --font-size-subtitle: ; */
     }
     /* 그 밖에 글로벌 스타일 작성 */
 `;
