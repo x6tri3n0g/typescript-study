@@ -1,5 +1,12 @@
 # Installation and Setting
 
+-   [Installation and Setting](#installation-and-setting)
+    -   [Installation](#installation)
+    -   [The TypeScript Playground](#the-typescript-playground)
+    -   [VSCode + TS](#vscode---ts)
+    -   [TS file 만들기](#ts-file----)
+    -   [TS 파일을 JS로 컴파일하기](#ts-----js-------)
+
 https://www.typescriptlang.org
 
 ## Installation
