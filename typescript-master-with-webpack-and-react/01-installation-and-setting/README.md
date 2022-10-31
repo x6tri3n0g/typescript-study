@@ -29,3 +29,12 @@ Version 4.8.4
 ```
 
 4.8.4 버전이 설치되었다.
+
+## The TypeScript Playground
+
+설치하지 않아도 TypeScript를 바로 사용해 볼 수 있다.
+
+https://www.typescriptlang.org/play
+
+`Examples`, `TS Config`에 들어가서 여러가지 만져보며 사용해보자.  
+코드 작성 후 `Run`을 클릭하여 TS를 실행해보자.
