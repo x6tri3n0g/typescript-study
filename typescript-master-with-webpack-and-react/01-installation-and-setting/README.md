@@ -15,4 +15,17 @@ https://www.typescriptlang.org/download
 
 ```
 > npm install typscript --save-dev
+
+# But, 우리는 글로벌로 설치할 것이다.
+
+> npm install -g typescript
 ```
+
+잘 설치되었는지 확인하기 위해서는 아래 명령어를 실행해본다.
+
+```
+> tsc -v
+Version 4.8.4
+```
+
+4.8.4 버전이 설치되었다.
